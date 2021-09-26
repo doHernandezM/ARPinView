@@ -15,6 +15,12 @@ public struct PinViewState: Codable {
     var type: Int = PinType.pwm.rawValue
     var background:Color?
     var horizontal:Bool = true
+    
+    public init(type: Int, background: Color, horizontal: Bool){
+        self.type = type
+        self.background = background
+        self.horizontal = horizontal
+    }
 }
 
 public enum PinType: Int, CaseIterable {
@@ -90,9 +96,9 @@ public struct PinView: View {
 struct PinView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            PinView(state: PinViewState(background: .clear, horizontal: false))
+            PinView(state: PinViewState(type: PinType.rPi.rawValue, background: Color.clear, horizontal: false))
                 .preferredColorScheme(.light)
-            PinView(state: PinViewState(background: .clear, horizontal: false))
+            PinView(state: PinViewState(type: PinType.rPi.rawValue, background: Color.clear, horizontal: false))
                 .preferredColorScheme(.dark)
         }
     }
