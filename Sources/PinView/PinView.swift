@@ -20,10 +20,10 @@ public enum PinType: Int, CaseIterable {
     case rPi, ic, pwm
 }
 
-struct PinView: View {
-    var delegate: PinViewDelegate? = nil
-    var state: PinViewState
-    var backgroundColor: Color  {
+public struct PinView: View {
+    public var delegate: PinViewDelegate? = nil
+    public var state: PinViewState
+    public var backgroundColor: Color  {
         get {
             switch self.type {
             case .rPi:
@@ -38,7 +38,7 @@ struct PinView: View {
         }
     }
     
-    var pins: [Pin] {
+    public var pins: [Pin] {
         get {
             var internalPins: [Pin] = []
             
@@ -54,9 +54,9 @@ struct PinView: View {
             return internalPins
         }
     }
-    var type: PinType = .pwm
+    public var type: PinType = .pwm
     
-    var body: some View {
+    public var body: some View {
         let isHorizontal = (type == .ic)
         ManualStack(isVertical: !isHorizontal) {
             ForEach(pins, id:\.self){ pin in
@@ -89,9 +89,9 @@ struct PinView_Previews: PreviewProvider {
     }
 }
 
-protocol PinViewDelegate {
+public protocol PinViewDelegate {
     func pinAction(pin:Pin)
 }
-protocol PinDelegate {
+public protocol PinDelegate {
     func pinAction(pin:Pin)
 }

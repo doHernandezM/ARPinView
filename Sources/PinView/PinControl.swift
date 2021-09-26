@@ -69,10 +69,10 @@ struct PinLabel: View {
     }
 }
 
-struct PinControl: View {
-    var pin: Pin
+public struct PinControl: View {
+    public var pin: Pin
     
-    var body: some View {
+    public var body: some View {
         return Group{
             if pin.isVertical(){
                 VStack{
