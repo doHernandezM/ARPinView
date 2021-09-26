@@ -32,6 +32,7 @@ struct PinStateView:View {
                 .fontWeight(.medium)
                 .foregroundColor(Color.primary)
                 .shadow(color: Color.primary, radius: 1.0, x: 0.0, y: 0.0)
+                .clipped()
         }.clipped()
     }
 }
@@ -65,6 +66,7 @@ struct PinLabel: View {
                 .font(.system(.title, design: .monospaced))
                 .foregroundColor(Color.primary)
                 .shadow(color: Color.primary, radius: 1.0, x: 0.0, y: 0.0)
+                .clipped()
         }.clipped()
     }
 }
