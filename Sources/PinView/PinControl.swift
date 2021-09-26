@@ -80,8 +80,7 @@ struct PinLabel: View {
 
 public struct PinControl: View {
     public var pin: Pin
-    public var pinDelegate: PinDelegate? = nil
-    
+
     public var body: some View {
         return Group{
             if pin.isVertical(){
@@ -113,9 +112,9 @@ public struct PinControl: View {
         self.pin = Pin()
     }
 
-    public init(pin:Pin, pinDelegate: PinDelegate?) {
+    
+    public init(pin:Pin) {
         self.pin = pin
-        self.pinDelegate = pinDelegate
     }
     
 
@@ -134,31 +133,31 @@ struct PinControl_Previews: PreviewProvider {
         ScrollView {
             HStack{
                 VStack{
-                    PinControl(pin: rPi40Pins[0], pinDelegate: nil)
-                    PinControl(pin: rPi40Pins[2], pinDelegate: nil)
+                    PinControl(pin: rPi40Pins[0])
+                    PinControl(pin: rPi40Pins[2])
                 }
                 VStack{
-                    PinControl(pin: rPi40Pins[1], pinDelegate: nil)
-                    PinControl(pin: rPi40Pins[3], pinDelegate: nil)
+                    PinControl(pin: rPi40Pins[1])
+                    PinControl(pin: rPi40Pins[3])
                 }
             }
             
             VStack{
                 HStack{
-                    PinControl(pin: analogPins[0], pinDelegate: nil)
-                    PinControl(pin: analogPins[2], pinDelegate: nil)
+                    PinControl(pin: analogPins[0])
+                    PinControl(pin: analogPins[2])
                 }
                 HStack{
-                    PinControl(pin: analogPins[1], pinDelegate: nil)
-                    PinControl(pin: analogPins[3], pinDelegate: nil)
+                    PinControl(pin: analogPins[1])
+                    PinControl(pin: analogPins[3])
                 }
             }
             
             VStack{
-                PinControl(pin: pwmPins[0], pinDelegate: nil)
-                PinControl(pin: pwmPins[1], pinDelegate: nil)
-                PinControl(pin: pwmPins[2], pinDelegate: nil)
-                PinControl(pin: pwmPins[3], pinDelegate: nil)
+                PinControl(pin: pwmPins[0])
+                PinControl(pin: pwmPins[1])
+                PinControl(pin: pwmPins[2])
+                PinControl(pin: pwmPins[3])
             }
         }.preferredColorScheme(.light)
     }

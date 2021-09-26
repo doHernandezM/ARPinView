@@ -77,14 +77,13 @@ public class Pin: Hashable, Codable {
         return 40.0
     }
     
-    public static func setPinType(type:PinType, pins:[Pin], delegate:PinDelegate?) -> [Pin]{
-        var thePins: [Pin] = []
+    public static func setPinType(type:PinType, pins:[Pin]) -> [Pin]{
+//        var thePins: [Pin] = []
         for (_,pin) in pins.enumerated() {
-            pin.delegate = delegate
             pin.type = type.rawValue
-            thePins.append(pin)
+//            thePins.append(pin)
         }
-        return thePins
+        return pins
     }
     
 }

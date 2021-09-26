@@ -31,7 +31,7 @@ public enum PinType: Int, CaseIterable {
 
 ///Provide the ``PinView``  with a ``PinViewState`` to get stated
 public struct PinView: View {
-    public var delegate: PinDelegate? = nil
+    
     public var state: PinViewState
     public var backgroundColor: Color  {
         get {
@@ -55,11 +55,11 @@ public struct PinView: View {
             
             switch PinType(rawValue: self.state.type) {
             case .rPi:
-                internalPins = Pin.setPinType(type: .rPi, pins: rPi40Pins, delegate: delegate)
+                internalPins = Pin.setPinType(type: .rPi, pins: rPi40Pins)
             case .ic:
-                internalPins = Pin.setPinType(type: .ic, pins: analogPins, delegate: delegate)
+                internalPins = Pin.setPinType(type: .ic, pins: analogPins)
             case .pwm:
-                internalPins = Pin.setPinType(type: .pwm, pins: pwmPins, delegate: delegate)
+                internalPins = Pin.setPinType(type: .pwm, pins: pwmPins)
             default:
                 break
             }
@@ -74,15 +74,15 @@ public struct PinView: View {
                 let pinLocation = pins.firstIndex(of: pin) ?? 0
                 
                 if (pinLocation % 2 == 0 && self.state.type != PinType.pwm.rawValue) {
-                    ManualStack(isVertical: isHorizontal) {PinControl(pin: pin, pinDelegate: nil)
-                        PinControl(pin: pins[pinLocation + 1], pinDelegate: nil)
+                    ManualStack(isVertical: isHorizontal) {PinControl(pin: pin)
+                        PinControl(pin: pins[pinLocation + 1])
                     }
                 } else if (self.state.type == PinType.pwm.rawValue) {
-                    PinControl(pin: pin, pinDelegate: nil)
+                    PinControl(pin: pin)
                 } else {
                     EmptyView()
                 }
-            }.padding(Edge.Set.all, 9.0)
+            }//.padding(Edge.Set.all, 9.0)
         }.background(self.backgroundColor)
         
     }
@@ -96,6 +96,10 @@ public struct PinView: View {
         for pin in pins {
             pin.delegate = delegate
         }
+    }
+    
+    public init(state: PinViewState) {
+        self.state = state
     }
     
 }
