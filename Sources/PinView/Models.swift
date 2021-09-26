@@ -61,6 +61,17 @@ public struct Pin: Hashable, Codable {
     func squareHeight() -> Double {
         return 50.0
     }
+    
+    static func setPinType(type:PinType, pins:[Pin]) -> [Pin]{
+            var thePins: [Pin] = []
+            for (_,pin) in pins.enumerated() {
+                var newPin = pin
+                newPin.type = type.rawValue
+                thePins.append(newPin)
+            }
+            return thePins
+    }
+    
 }
 
 public var rPi40Pins: [Pin] = [

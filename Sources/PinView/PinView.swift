@@ -9,7 +9,7 @@ import SwiftUI
 import ManualStack
 
 //public typealias Pins = [Pin]
-
+//extension Pins {
 
 public struct PinViewState: Codable {
     var background:Color?
@@ -44,28 +44,17 @@ struct PinView: View {
             
             switch self.type {
             case .rPi:
-                internalPins = setPinType(type: .rPi)
+                internalPins = Pin.setPinType(type: .rPi, pins: rPi40Pins)
             case .ic:
-                internalPins = setPinType(type: .ic)
+                internalPins = Pin.setPinType(type: .ic, pins: analogPins)
             case .pwm:
-                internalPins = setPinType(type: .pwm)
+                internalPins = Pin.setPinType(type: .pwm, pins: pwmPins)
             }
             
             return internalPins
         }
     }
-    
-    func setPinType(type:PinType) -> [Pin]{
-        var thePins: [Pin] = []
-        for (_,pin) in pins.enumerated() {
-            var newPin = pin
-            newPin.type = type.rawValue
-            thePins.append(newPin)
-        }
-        return thePins
-    }
-    
-    var type: PinType = .rPi
+    var type: PinType = .pwm
     
     var body: some View {
         let isHorizontal = (type == .ic)
