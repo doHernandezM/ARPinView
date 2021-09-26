@@ -19,7 +19,15 @@ public struct Pin: Hashable, Codable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(text)
     }
+    var delegate:PinDelegate? = nil
     
+    enum CodingKeys: String, CodingKey {
+    case text
+        case color
+        case position
+        case type
+        case state
+    }
     
     var text = "A Pin"
     
@@ -29,7 +37,6 @@ public struct Pin: Hashable, Codable {
     
     var state: PinState = PinState(text: "8", enabled: true)
     
-    var subPins: [Pin] = []
     
     func isVertical() -> Bool {
         if (self.position == Position.top.rawValue || self.position == Position.bottom.rawValue){
@@ -53,19 +60,20 @@ public struct Pin: Hashable, Codable {
     
     func frame() -> (width:Double,height:Double) {
         if self.isVertical() {
-            return (40.0,135.0)
+            return (40.0,150.0)
         }
-        return (135.0,40.0)
+        return (150.0,40.0)
     }
     
     func squareHeight() -> Double {
         return 40.0
     }
     
-    static func setPinType(type:PinType, pins:[Pin]) -> [Pin]{
+    static func setPinType(type:PinType, pins:[Pin], delegate:PinDelegate?) -> [Pin]{
             var thePins: [Pin] = []
             for (_,pin) in pins.enumerated() {
                 var newPin = pin
+                newPin.delegate = delegate
                 newPin.type = type.rawValue
                 thePins.append(newPin)
             }

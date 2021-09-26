@@ -63,7 +63,7 @@ struct PinLabel: View {
                     .clipped()
                     .frame(width: pin.frame().width, height: pin.frame().height)
                     .foregroundColor(Color.gray)
-//                    .background(Color.secondary)
+
                     .shadow(color: Color.black, radius: 1.0, x: 1.0, y: 1.0)
                     .saturation(0.75)
                 
@@ -80,6 +80,7 @@ struct PinLabel: View {
 
 public struct PinControl: View {
     public var pin: Pin
+    public var pinDelegate: PinDelegate? = nil
     
     public var body: some View {
         return Group{
@@ -103,6 +104,7 @@ public struct PinControl: View {
                 }
             }
         }.onTapGesture {
+            self.pin.delegate?.pinAction(pin: self.pin)
             print("\(pin.text) tapped")
         }
     }
@@ -111,8 +113,9 @@ public struct PinControl: View {
         self.pin = Pin()
     }
 
-    public init(pin:Pin) {
+    public init(pin:Pin, pinDelegate: PinDelegate?) {
         self.pin = pin
+        self.pinDelegate = pinDelegate
     }
     
 
@@ -131,31 +134,31 @@ struct PinControl_Previews: PreviewProvider {
         ScrollView {
             HStack{
                 VStack{
-                    PinControl(pin: rPi40Pins[0])
-                    PinControl(pin: rPi40Pins[2])
+                    PinControl(pin: rPi40Pins[0], pinDelegate: nil)
+                    PinControl(pin: rPi40Pins[2], pinDelegate: nil)
                 }
                 VStack{
-                    PinControl(pin: rPi40Pins[1])
-                    PinControl(pin: rPi40Pins[3])
+                    PinControl(pin: rPi40Pins[1], pinDelegate: nil)
+                    PinControl(pin: rPi40Pins[3], pinDelegate: nil)
                 }
             }
             
             VStack{
                 HStack{
-                    PinControl(pin: analogPins[0])
-                    PinControl(pin: analogPins[2])
+                    PinControl(pin: analogPins[0], pinDelegate: nil)
+                    PinControl(pin: analogPins[2], pinDelegate: nil)
                 }
                 HStack{
-                    PinControl(pin: analogPins[1])
-                    PinControl(pin: analogPins[3])
+                    PinControl(pin: analogPins[1], pinDelegate: nil)
+                    PinControl(pin: analogPins[3], pinDelegate: nil)
                 }
             }
             
             VStack{
-                PinControl(pin: pwmPins[0])
-                PinControl(pin: pwmPins[1])
-                PinControl(pin: pwmPins[2])
-                PinControl(pin: pwmPins[3])
+                PinControl(pin: pwmPins[0], pinDelegate: nil)
+                PinControl(pin: pwmPins[1], pinDelegate: nil)
+                PinControl(pin: pwmPins[2], pinDelegate: nil)
+                PinControl(pin: pwmPins[3], pinDelegate: nil)
             }
         }.preferredColorScheme(.light)
     }

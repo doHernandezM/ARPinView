@@ -11,6 +11,7 @@ import ManualStack
 //public typealias Pins = [Pin]
 //extension Pins {
 
+///Use this to tell the ``PinView`` how to behave.
 public struct PinViewState: Codable {
     var type: Int = PinType.pwm.rawValue
     var background:Color?
@@ -23,12 +24,14 @@ public struct PinViewState: Codable {
     }
 }
 
+///Determine the type of ``Pin`` array to draw. rPI = 40 Pin Pi, ic = MCP3008, pwm = PCA9685
 public enum PinType: Int, CaseIterable {
     case rPi, ic, pwm
 }
 
+///Provide the ``PinView``  with a ``PinViewState`` to get stated
 public struct PinView: View {
-    public var delegate: PinViewDelegate? = nil
+    public var delegate: PinDelegate? = nil
     public var state: PinViewState
     public var backgroundColor: Color  {
         get {
@@ -45,17 +48,18 @@ public struct PinView: View {
         }
     }
     
+    ///Makes the ``Pin`` consistent with the ``PinView``.
     public var pins: [Pin] {
         get {
             var internalPins: [Pin] = []
             
             switch PinType(rawValue: self.state.type) {
             case .rPi:
-                internalPins = Pin.setPinType(type: .rPi, pins: rPi40Pins)
+                internalPins = Pin.setPinType(type: .rPi, pins: rPi40Pins, delegate: delegate)
             case .ic:
-                internalPins = Pin.setPinType(type: .ic, pins: analogPins)
+                internalPins = Pin.setPinType(type: .ic, pins: analogPins, delegate: delegate)
             case .pwm:
-                internalPins = Pin.setPinType(type: .pwm, pins: pwmPins)
+                internalPins = Pin.setPinType(type: .pwm, pins: pwmPins, delegate: delegate)
             default:
                 break
             }
@@ -70,11 +74,11 @@ public struct PinView: View {
                 let pinLocation = pins.firstIndex(of: pin) ?? 0
                 
                 if (pinLocation % 2 == 0 && self.state.type != PinType.pwm.rawValue) {
-                    ManualStack(isVertical: isHorizontal) {PinControl(pin: pin)
-                        PinControl(pin: pins[pinLocation + 1])
+                    ManualStack(isVertical: isHorizontal) {PinControl(pin: pin, pinDelegate: nil)
+                        PinControl(pin: pins[pinLocation + 1], pinDelegate: nil)
                     }
                 } else if (self.state.type == PinType.pwm.rawValue) {
-                    PinControl(pin: pin)
+                    PinControl(pin: pin, pinDelegate: nil)
                 } else {
                     EmptyView()
                 }
@@ -104,9 +108,6 @@ struct PinView_Previews: PreviewProvider {
     }
 }
 
-public protocol PinViewDelegate {
-    func pinAction(pin:Pin)
-}
 public protocol PinDelegate {
     func pinAction(pin:Pin)
 }
