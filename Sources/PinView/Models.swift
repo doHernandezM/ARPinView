@@ -39,7 +39,7 @@ public struct Pin: Hashable, Codable {
     
     public init() {}
     
-    init(text: String, color: Color, position: Int, type: Int) {
+    public init(text: String, color: Color, position: Int, type: Int) {
         self.text = text
         self.color = color
         self.position = position
