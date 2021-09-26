@@ -77,6 +77,10 @@ public struct PinView: View {
         
     }
     
+    public init(state: PinViewState) {
+        self.state = state
+    }
+    
 }
 
 struct PinView_Previews: PreviewProvider {

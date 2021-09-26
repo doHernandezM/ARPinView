@@ -96,6 +96,10 @@ public struct PinControl: View {
         }
     }
     
+    public init(pin:Pin) {
+        self.pin = pin
+    }
+    
     func pinControlBlock() -> some View {
         Group{
             if (pin.position == Position.right.rawValue || pin.position == Position.top.rawValue) {PinStateView(pin: pin)}
