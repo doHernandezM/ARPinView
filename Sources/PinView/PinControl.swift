@@ -17,6 +17,7 @@ struct PinStateView:View {
                 RoundedRectangle(cornerRadius: 9.0)
                     .frame(width:pin.squareHeight(), height: pin.squareHeight())
                     .foregroundColor(pin.color)
+                    .clipped()
             } else {
                 Circle()
                     .foregroundColor(Color.gray)
@@ -26,14 +27,15 @@ struct PinStateView:View {
                     .strokeBorder((Color.primary), lineWidth: 3.0)
                     .frame(width:pin.squareHeight(), height: pin.squareHeight())
                     .foregroundColor(Color.clear)
+                    .clipped()
             }
             Text(pin.state.text)
                 .font(.system(.title, design: .monospaced))
                 .fontWeight(.medium)
                 .foregroundColor(Color.primary)
                 .shadow(color: Color.primary, radius: 1.0, x: 0.0, y: 0.0)
-                .clipped()
-        }.clipped()
+                
+        }
     }
 }
 
@@ -54,6 +56,8 @@ struct PinLabel: View {
                     .foregroundColor(pin.color)
                     .shadow(color: Color.black, radius: 1.0, x: 1.0, y: 1.0)
                     .saturation(0.75)
+                .clipped()
+                
             } else {
                 RoundedRectangle(cornerRadius: 9.0)
                     .frame(width: pin.frame().width, height: pin.frame().height)
@@ -61,6 +65,8 @@ struct PinLabel: View {
 //                    .background(Color.secondary)
                     .shadow(color: Color.black, radius: 1.0, x: 1.0, y: 1.0)
                     .saturation(0.75)
+                .clipped()
+                
             }
             Text(pin.label())
                 .font(.system(.title, design: .monospaced))
@@ -86,9 +92,12 @@ public struct PinControl: View {
                         RoundedRectangle(cornerRadius: 9.0)
                             .frame(width:pin.squareHeight(), height: pin.squareHeight())
                             .foregroundColor(.black)
+                            .clipped()
                         RoundedRectangle(cornerRadius: 9.0)
                             .frame(width:pin.squareHeight(), height: pin.squareHeight())
                             .foregroundColor(.red)
+                        .clipped()
+                        
                     }
                     pinControlBlock()
                 }.clipped()
