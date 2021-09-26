@@ -12,6 +12,7 @@ import ManualStack
 //extension Pins {
 
 public struct PinViewState: Codable {
+    var type: Int = PinType.pwm.rawValue
     var background:Color?
     var horizontal:Bool = true
 }
@@ -25,15 +26,15 @@ public struct PinView: View {
     public var state: PinViewState
     public var backgroundColor: Color  {
         get {
-            switch self.type {
+            switch PinType(rawValue: self.state.type) {
             case .rPi:
                 return .clear
             case .ic:
                 return .black.opacity(0.75)
             case .pwm:
                 return .clear
-                //            default:
-                //              return .clear
+            default:
+                return .clear
             }
         }
     }
@@ -42,31 +43,31 @@ public struct PinView: View {
         get {
             var internalPins: [Pin] = []
             
-            switch self.type {
+            switch PinType(rawValue: self.state.type) {
             case .rPi:
                 internalPins = Pin.setPinType(type: .rPi, pins: rPi40Pins)
             case .ic:
                 internalPins = Pin.setPinType(type: .ic, pins: analogPins)
             case .pwm:
                 internalPins = Pin.setPinType(type: .pwm, pins: pwmPins)
+            default:
+                break
             }
-            
             return internalPins
         }
     }
-    public var type: PinType = .pwm
     
     public var body: some View {
-        let isHorizontal = (type == .ic)
+        let isHorizontal = (self.state.type == PinType.ic.rawValue)
         ManualStack(isVertical: !isHorizontal) {
             ForEach(pins, id:\.self){ pin in
                 let pinLocation = pins.firstIndex(of: pin) ?? 0
                 
-                if (pinLocation % 2 == 0 && type != .pwm) {
+                if (pinLocation % 2 == 0 && self.state.type != PinType.pwm.rawValue) {
                     ManualStack(isVertical: isHorizontal) {PinControl(pin: pin)
                         PinControl(pin: pins[pinLocation + 1])
                     }
-                } else if (type == .pwm) {
+                } else if (self.state.type == PinType.pwm.rawValue) {
                     PinControl(pin: pin)
                 } else {
                     EmptyView()
@@ -75,7 +76,7 @@ public struct PinView: View {
         }.background(self.backgroundColor)
         
     }
-
+    
 }
 
 struct PinView_Previews: PreviewProvider {
