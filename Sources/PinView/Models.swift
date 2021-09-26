@@ -62,7 +62,6 @@ public class Pin: Hashable, Codable {
                 if i != (self.text.count - 1) {
                     label = label + "\r"
                 }
-                label = label + [char] + "\r"
             }
             
             return label
