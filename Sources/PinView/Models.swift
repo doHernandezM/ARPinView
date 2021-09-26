@@ -53,13 +53,13 @@ public struct Pin: Hashable, Codable {
     
     func frame() -> (width:Double,height:Double) {
         if self.isVertical() {
-            return (50.0,200.0)
+            return (25.0,100.0)
         }
-        return (200.0,50.0)
+        return (100.0,25.0)
     }
     
     func squareHeight() -> Double {
-        return 50.0
+        return 25.0
     }
     
     static func setPinType(type:PinType, pins:[Pin]) -> [Pin]{
