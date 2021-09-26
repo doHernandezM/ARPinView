@@ -52,28 +52,27 @@ struct PinLabel: View {
         ZStack {
             if pin.type != PinType.pwm.rawValue {
                 RoundedRectangle(cornerRadius: 9.0)
+                    .clipped()
                     .frame(width: pin.frame().width, height: pin.frame().height)
                     .foregroundColor(pin.color)
                     .shadow(color: Color.black, radius: 1.0, x: 1.0, y: 1.0)
                     .saturation(0.75)
-                .clipped()
-                
             } else {
                 RoundedRectangle(cornerRadius: 9.0)
+                    .clipped()
                     .frame(width: pin.frame().width, height: pin.frame().height)
                     .foregroundColor(Color.gray)
 //                    .background(Color.secondary)
                     .shadow(color: Color.black, radius: 1.0, x: 1.0, y: 1.0)
                     .saturation(0.75)
-                .clipped()
                 
             }
             Text(pin.label())
+                .clipped()
                 .font(.system(.title, design: .monospaced))
                 .foregroundColor(Color.primary)
                 .shadow(color: Color.primary, radius: 1.0, x: 0.0, y: 0.0)
-                .clipped()
-        }.clipped()
+        }
     }
 }
 
@@ -90,17 +89,16 @@ public struct PinControl: View {
                 HStack{
                     if (pin.type == PinType.pwm.rawValue) {
                         RoundedRectangle(cornerRadius: 9.0)
+                            .clipped()
                             .frame(width:pin.squareHeight(), height: pin.squareHeight())
                             .foregroundColor(.black)
-                            .clipped()
                         RoundedRectangle(cornerRadius: 9.0)
+                            .clipped()
                             .frame(width:pin.squareHeight(), height: pin.squareHeight())
                             .foregroundColor(.red)
-                        .clipped()
-                        
                     }
                     pinControlBlock()
-                }.clipped()
+                }
             }
         }.onTapGesture {
             print("\(pin.text) tapped")
@@ -122,7 +120,7 @@ public struct PinControl: View {
             if (pin.position == Position.right.rawValue || pin.position == Position.top.rawValue) {PinStateView(pin: pin)}
             PinLabel(pin: pin)
             if (pin.position == Position.left.rawValue || pin.position == Position.bottom.rawValue) {PinStateView(pin: pin)}
-        }.clipped()
+        }
     }
 }
 
