@@ -70,6 +70,8 @@ struct PinLabel: View {
             }
             Text(pin.label())
                 .frame(width: pin.frame().width, height: pin.frame().height)
+                .allowsTightening(true)
+                .flipsForRightToLeftLayoutDirection(true)
                 .clipped()
                 .font(.system(.title, design: .monospaced))
                 .foregroundColor(Color.primary)
@@ -104,7 +106,6 @@ public struct PinControl: View {
             }
         }.onTapGesture {
             self.pin.delegate?.pinAction(pin: self.pin)
-            print("\(pin.text) tapped")
         }
     }
     

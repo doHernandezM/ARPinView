@@ -57,9 +57,14 @@ public class Pin: Hashable, Codable {
         var label = ""
         
         if isVertical() {
-            for char in self.text {
+            for (i,char) in self.text.enumerated() {
+                label = label + [char]
+                if i != (self.text.count - 1) {
+                    label = label + "\r"
+                }
                 label = label + [char] + "\r"
             }
+            
             return label
         }
         
