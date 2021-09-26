@@ -11,7 +11,7 @@ public enum Position: Int {
     case left, center, right, top, bottom
 }
 
-public struct Pin: Hashable, Codable {
+public class Pin: Hashable, Codable {
     public static func == (lhs: Pin, rhs: Pin) -> Bool {
         return lhs.text == rhs.text
     }
@@ -80,10 +80,9 @@ public struct Pin: Hashable, Codable {
     public static func setPinType(type:PinType, pins:[Pin], delegate:PinDelegate?) -> [Pin]{
         var thePins: [Pin] = []
         for (_,pin) in pins.enumerated() {
-            var newPin = pin
-            newPin.delegate = delegate
-            newPin.type = type.rawValue
-            thePins.append(newPin)
+            pin.delegate = delegate
+            pin.type = type.rawValue
+            thePins.append(pin)
         }
         return thePins
     }

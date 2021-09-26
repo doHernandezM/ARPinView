@@ -91,8 +91,11 @@ public struct PinView: View {
         self.state = PinViewState(type: PinType.rPi.rawValue, background: .clear, horizontal: false)
     }
 
-    public init(state: PinViewState) {
+    public init(state: PinViewState, delegate:PinDelegate?) {
         self.state = state
+        for pin in pins {
+            pin.delegate = delegate
+        }
     }
     
 }
@@ -100,9 +103,9 @@ public struct PinView: View {
 struct PinView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            PinView(state: PinViewState(type: PinType.rPi.rawValue, background: Color.clear, horizontal: false))
+            PinView(state: PinViewState(type: PinType.rPi.rawValue, background: Color.clear, horizontal: false), delegate: nil)
                 .preferredColorScheme(.light)
-            PinView(state: PinViewState(type: PinType.rPi.rawValue, background: Color.clear, horizontal: false))
+            PinView(state: PinViewState(type: PinType.rPi.rawValue, background: Color.clear, horizontal: false), delegate: nil)
                 .preferredColorScheme(.dark)
         }
     }
