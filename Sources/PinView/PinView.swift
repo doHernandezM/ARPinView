@@ -77,6 +77,10 @@ public struct PinView: View {
         
     }
     
+    public init() {
+        self.state = PinViewState(type: PinType.rPi.rawValue, background: .clear, horizontal: false)
+    }
+
     public init(state: PinViewState) {
         self.state = state
     }

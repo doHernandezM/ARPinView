@@ -96,9 +96,15 @@ public struct PinControl: View {
         }
     }
     
+    public init() {
+        self.pin = Pin()
+    }
+
     public init(pin:Pin) {
         self.pin = pin
     }
+    
+
     
     func pinControlBlock() -> some View {
         Group{
