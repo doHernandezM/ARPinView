@@ -30,8 +30,9 @@ struct PinStateView:View {
                     .clipped()
             }
             Text(pin.state.text)
-                .font(.system(.title, design: .monospaced))
                 .fontWeight(.medium)
+                .frame(width: pin.squareHeight(), height: pin.squareHeight())
+                .font(.system(.title, design: .monospaced))
                 .foregroundColor(Color.primary)
                 .shadow(color: Color.primary, radius: 1.0, x: 0.0, y: 0.0)
                 
@@ -68,6 +69,7 @@ struct PinLabel: View {
                 
             }
             Text(pin.label())
+                .frame(width: pin.frame().width, height: pin.frame().height)
                 .clipped()
                 .font(.system(.title, design: .monospaced))
                 .foregroundColor(Color.primary)
