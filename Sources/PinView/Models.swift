@@ -37,6 +37,14 @@ public struct Pin: Hashable, Codable {
     
     public var state: PinState = PinState(text: "8", enabled: true)
     
+    public init() {}
+    
+    init(text: String, color: Color, position: Int, type: Int) {
+        self.text = text
+        self.color = color
+        self.position = position
+        self.type = type
+    }
     
     public func isVertical() -> Bool {
         if (self.position == Position.top.rawValue || self.position == Position.bottom.rawValue){

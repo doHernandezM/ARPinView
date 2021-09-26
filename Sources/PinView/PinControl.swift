@@ -105,7 +105,7 @@ public struct PinControl: View {
             }
         }.onTapGesture {
             self.pin.delegate?.pinAction(pin: self.pin)
-            print("\(pin.text) tapped")
+//            print("\(pin.text) tapped")
         }
     }
     
