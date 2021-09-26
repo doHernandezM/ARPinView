@@ -59,7 +59,7 @@ public struct Pin: Hashable, Codable {
     }
     
     func squareHeight() -> Double {
-        return 25.0
+        return 40.0
     }
     
     static func setPinType(type:PinType, pins:[Pin]) -> [Pin]{
