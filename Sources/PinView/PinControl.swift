@@ -32,7 +32,7 @@ struct PinStateView:View {
                 .fontWeight(.medium)
                 .foregroundColor(Color.primary)
                 .shadow(color: Color.primary, radius: 1.0, x: 0.0, y: 0.0)
-        }
+        }.clipped()
     }
 }
 
@@ -65,7 +65,7 @@ struct PinLabel: View {
                 .font(.system(.title, design: .monospaced))
                 .foregroundColor(Color.primary)
                 .shadow(color: Color.primary, radius: 1.0, x: 0.0, y: 0.0)
-        }
+        }.clipped()
     }
 }
 
@@ -77,7 +77,7 @@ public struct PinControl: View {
             if pin.isVertical(){
                 VStack{
                     pinControlBlock()
-                }
+                }.clipped()
             } else {
                 HStack{
                     if (pin.type == PinType.pwm.rawValue) {
@@ -89,7 +89,7 @@ public struct PinControl: View {
                             .foregroundColor(.red)
                     }
                     pinControlBlock()
-                }
+                }.clipped()
             }
         }.onTapGesture {
             print("\(pin.text) tapped")
@@ -111,7 +111,7 @@ public struct PinControl: View {
             if (pin.position == Position.right.rawValue || pin.position == Position.top.rawValue) {PinStateView(pin: pin)}
             PinLabel(pin: pin)
             if (pin.position == Position.left.rawValue || pin.position == Position.bottom.rawValue) {PinStateView(pin: pin)}
-        }
+        }.clipped()
     }
 }
 
