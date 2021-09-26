@@ -128,7 +128,7 @@ public struct PinControl: View {
 
 struct PinControl_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
+        ScrollView {
             HStack{
                 VStack{
                     PinControl(pin: rPi40Pins[0])
