@@ -53,9 +53,9 @@ public struct Pin: Hashable, Codable {
     
     func frame() -> (width:Double,height:Double) {
         if self.isVertical() {
-            return (25.0,100.0)
+            return (25.0,125.0)
         }
-        return (100.0,25.0)
+        return (125.0,25.0)
     }
     
     func squareHeight() -> Double {
