@@ -68,7 +68,7 @@ public struct PinView: View {
     }
     
     public var body: some View {
-        let isHorizontal = (self.state.type != PinType.ic.rawValue)
+        let isHorizontal = (self.state.type == PinType.ic.rawValue)
         ManualStack(isVertical: !isHorizontal) {
             ForEach(pins, id:\.self){ pin in
                 let pinLocation = pins.firstIndex(of: pin) ?? 0
