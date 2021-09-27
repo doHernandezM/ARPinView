@@ -68,13 +68,13 @@ public struct PinView: View {
     }
     
     public var body: some View {
-        let isHorizontal = (self.state.type == PinType.ic.rawValue)
-        ManualStack(isVertical: isHorizontal) {
+        let isHorizontal = (self.state.type != PinType.ic.rawValue)
+        ManualStack(isVertical: !isHorizontal) {
             ForEach(pins, id:\.self){ pin in
                 let pinLocation = pins.firstIndex(of: pin) ?? 0
                 
                 if (pinLocation % 2 == 0 && self.state.type != PinType.pwm.rawValue) {
-                    ManualStack(isVertical: !isHorizontal) {PinControl(pin: pin)
+                    ManualStack(isVertical: isHorizontal) {PinControl(pin: pin)
                         PinControl(pin: pins[pinLocation + 1])
                     }
                 } else if (self.state.type == PinType.pwm.rawValue) {
