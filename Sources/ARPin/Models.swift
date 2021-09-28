@@ -11,6 +11,9 @@ public enum Position: Int {
     case left, center, right, top, bottom
 }
 
+///Pin model for the Pin view
+///
+/// - Note: This is different from SwiftPi.Pin.
 public class Pin: Hashable, Codable {
     public static func == (lhs: Pin, rhs: Pin) -> Bool {
         return lhs.text == rhs.text
@@ -31,7 +34,7 @@ public class Pin: Hashable, Codable {
     
     public var text = "A Pin"
     
-    public var color: Color = Color.red
+    public var color: Color = Color.clear
     public var position: Int? = Position.left.rawValue
     public var type: Int = PinType.rPi.rawValue
     
@@ -72,20 +75,18 @@ public class Pin: Hashable, Codable {
     
     func frame() -> (width:Double,height:Double) {
         if self.isVertical() {
-            return (30.0,130.0)
+            return (26.0,126.0)
         }
-        return (130.0,30.0)
+        return (126.0,26.0)
     }
     
     func squareHeight() -> Double {
-        return 30.0
+        return 26.0
     }
     
     public static func setPinType(type:PinType, pins:[Pin]) -> [Pin]{
-//        var thePins: [Pin] = []
         for (_,pin) in pins.enumerated() {
             pin.type = type.rawValue
-//            thePins.append(pin)
         }
         return pins
     }

@@ -7,9 +7,14 @@
 
 import SwiftUI
 
-struct PinStateView:View {
+public struct PinState: Codable {
+    var text = "8"
+    var enabled:Bool = true
+    var active:Bool = false
+}
+
+struct PinStateIcon:View {
     var pin: Pin
-    //    var is
     
     var body: some View {
         ZStack {
@@ -38,12 +43,6 @@ struct PinStateView:View {
                 
         }
     }
-}
-
-public struct PinState: Codable {
-    var text = "8"
-    var enabled:Bool = true
-    var active:Bool = false
 }
 
 struct PinLabel: View {
@@ -122,9 +121,9 @@ public struct PinControl: View {
     
     func pinControlBlock() -> some View {
         Group{
-            if (pin.position == Position.right.rawValue || pin.position == Position.top.rawValue) {PinStateView(pin: pin)}
+            if (pin.position == Position.right.rawValue || pin.position == Position.top.rawValue) {PinStateIcon(pin: pin)}
             PinLabel(pin: pin)
-            if (pin.position == Position.left.rawValue || pin.position == Position.bottom.rawValue) {PinStateView(pin: pin)}
+            if (pin.position == Position.left.rawValue || pin.position == Position.bottom.rawValue) {PinStateIcon(pin: pin)}
         }
     }
 }

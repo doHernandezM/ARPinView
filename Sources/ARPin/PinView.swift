@@ -75,7 +75,7 @@ public struct PinView: View {
                 
                 if (pinLocation % 2 == 0 && self.state.type != PinType.pwm.rawValue) {
                     ManualStack(isVertical: isHorizontal) {PinControl(pin: pin)
-                        PinControl(pin: pins[pinLocation + 1])
+                        if let individualPin = PinControl(pin: pins[pinLocation + 1]){individualPin}
                     }
                 } else if (self.state.type == PinType.pwm.rawValue) {
                     PinControl(pin: pin)
