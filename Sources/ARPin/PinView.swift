@@ -69,6 +69,7 @@ public struct PinView: View {
     
     public var body: some View {
         let isHorizontal = (self.state.type == PinType.ic.rawValue)
+        ScrollView{
         ManualStack(isVertical: !isHorizontal) {
             ForEach(pins, id:\.self){ pin in
                 let pinLocation = pins.firstIndex(of: pin) ?? 0
@@ -84,7 +85,7 @@ public struct PinView: View {
                 }
             }//.padding(Edge.Set.all, 9.0)
         }.background(self.backgroundColor)
-        
+        }
     }
     
     public init() {
