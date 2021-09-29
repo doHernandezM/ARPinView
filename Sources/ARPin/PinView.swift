@@ -84,7 +84,7 @@ public struct PinView: View {
                     EmptyView()
                 }
             }//.padding(Edge.Set.all, 9.0)
-        }.background(self.backgroundColor)
+        }.background(state.background)
         }
     }
     
