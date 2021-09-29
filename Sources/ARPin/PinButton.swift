@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-public struct PinState: Codable {
+public struct PinButtonState: Codable {
     var text = "8"
     var enabled:Bool = true
     var active:Bool = false
 }
 
-struct PinStateIcon:View {
+struct PinButtonIcon:View {
     var pin: Pin
     
     var body: some View {
@@ -45,7 +45,7 @@ struct PinStateIcon:View {
     }
 }
 
-struct PinLabel: View {
+struct PinButtonLabel: View {
     var pin: Pin
     
     var body: some View {
@@ -79,14 +79,14 @@ struct PinLabel: View {
     }
 }
 
-public struct PinControl: View {
+public struct PinButton: View {
     public var pin: Pin
 
     public var body: some View {
         return Group{
             if pin.isVertical(){
                 VStack{
-                    pinControlBlock()
+                    pinButtonBlock()
                 }.clipped()
             } else {
                 HStack{
@@ -100,7 +100,7 @@ public struct PinControl: View {
                             .frame(width:pin.squareHeight(), height: pin.squareHeight())
                             .foregroundColor(.red)
                     }
-                    pinControlBlock()
+                    pinButtonBlock()
                 }
             }
         }.onTapGesture {
@@ -119,45 +119,45 @@ public struct PinControl: View {
     
 
     
-    func pinControlBlock() -> some View {
+    func pinButtonBlock() -> some View {
         Group{
-            if (pin.position == Position.right.rawValue || pin.position == Position.top.rawValue) {PinStateIcon(pin: pin)}
-            PinLabel(pin: pin)
-            if (pin.position == Position.left.rawValue || pin.position == Position.bottom.rawValue) {PinStateIcon(pin: pin)}
+            if (pin.position == Position.right.rawValue || pin.position == Position.top.rawValue) {PinButtonIcon(pin: pin)}
+            PinButtonLabel(pin: pin)
+            if (pin.position == Position.left.rawValue || pin.position == Position.bottom.rawValue) {PinButtonIcon(pin: pin)}
         }
     }
 }
 
-struct PinControl_Previews: PreviewProvider {
+struct PinButton_Previews: PreviewProvider {
     static var previews: some View {
         ScrollView {
             HStack{
                 VStack{
-                    PinControl(pin: rPi40Pins[0])
-                    PinControl(pin: rPi40Pins[2])
+                    PinButton(pin: rPi40Pins[0])
+                    PinButton(pin: rPi40Pins[2])
                 }
                 VStack{
-                    PinControl(pin: rPi40Pins[1])
-                    PinControl(pin: rPi40Pins[3])
+                    PinButton(pin: rPi40Pins[1])
+                    PinButton(pin: rPi40Pins[3])
                 }
             }
             
             VStack{
                 HStack{
-                    PinControl(pin: analogPins[0])
-                    PinControl(pin: analogPins[2])
+                    PinButton(pin: analogPins[0])
+                    PinButton(pin: analogPins[2])
                 }
                 HStack{
-                    PinControl(pin: analogPins[1])
-                    PinControl(pin: analogPins[3])
+                    PinButton(pin: analogPins[1])
+                    PinButton(pin: analogPins[3])
                 }
             }
             
             VStack{
-                PinControl(pin: pwmPins[0])
-                PinControl(pin: pwmPins[1])
-                PinControl(pin: pwmPins[2])
-                PinControl(pin: pwmPins[3])
+                PinButton(pin: pwmPins[0])
+                PinButton(pin: pwmPins[1])
+                PinButton(pin: pwmPins[2])
+                PinButton(pin: pwmPins[3])
             }
         }.preferredColorScheme(.light)
     }

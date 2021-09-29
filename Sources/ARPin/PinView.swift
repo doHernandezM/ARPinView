@@ -13,9 +13,9 @@ import ManualStack
 
 ///Use this to tell the ``PinView`` how to behave.
 public struct PinViewState: Codable {
-    var type: Int = PinType.pwm.rawValue
-    var background:Color?
-    var horizontal:Bool = true
+    public var type: Int = PinType.pwm.rawValue
+    public var background:Color?
+    public var horizontal:Bool = true
     
     public init(type: Int, background: Color, horizontal: Bool){
         self.type = type
@@ -75,11 +75,11 @@ public struct PinView: View {
                 let pinLocation = pins.firstIndex(of: pin) ?? 0
                 
                 if (pinLocation % 2 == 0 && self.state.type != PinType.pwm.rawValue) {
-                    ManualStack(isVertical: isHorizontal) {PinControl(pin: pin)
-                        if let individualPin = PinControl(pin: pins[pinLocation + 1]){individualPin}
+                    ManualStack(isVertical: isHorizontal) {PinButton(pin: pin)
+                        if let individualPin = PinButton(pin: pins[pinLocation + 1]){individualPin}
                     }
                 } else if (self.state.type == PinType.pwm.rawValue) {
-                    PinControl(pin: pin)
+                    PinButton(pin: pin)
                 } else {
                     EmptyView()
                 }

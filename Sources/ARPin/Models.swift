@@ -38,7 +38,7 @@ public class Pin: Hashable, Codable {
     public var position: Int? = Position.left.rawValue
     public var type: Int = PinType.rPi.rawValue
     
-    public var state: PinState = PinState(text: "8", enabled: true)
+    public var state: PinButtonState = PinButtonState(text: "8", enabled: true)
     
     public init() {}
     
