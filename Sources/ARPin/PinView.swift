@@ -53,6 +53,7 @@ public struct PinView: View {
         }
     }
     
+    internal var internalPins: [PinButton]? = nil
     ///Makes the ``Pin`` consistent with the ``PinView``.
     public var pins: [PinButton] {
         get {
