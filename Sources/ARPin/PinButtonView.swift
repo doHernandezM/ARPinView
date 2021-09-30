@@ -13,8 +13,8 @@ public struct PinButtonState: Codable {
     var active:Bool = false
 }
 
-struct PinButtonIcon:View {
-    var pin: Pin
+struct PinIcon:View {
+    var pin: PinButton
     
     var body: some View {
         ZStack {
@@ -45,8 +45,8 @@ struct PinButtonIcon:View {
     }
 }
 
-struct PinButtonLabel: View {
-    var pin: Pin
+struct PinLabel: View {
+    var pin: PinButton
     
     var body: some View {
         ZStack {
@@ -79,8 +79,8 @@ struct PinButtonLabel: View {
     }
 }
 
-public struct PinButton: View {
-    public var pin: Pin
+public struct PinButtonView: View {
+    public var pin: PinButton
 
     public var body: some View {
         return Group{
@@ -109,11 +109,11 @@ public struct PinButton: View {
     }
     
     public init() {
-        self.pin = Pin()
+        self.pin = PinButton()
     }
 
     
-    public init(pin:Pin) {
+    public init(pin:PinButton) {
         self.pin = pin
     }
     
@@ -121,9 +121,9 @@ public struct PinButton: View {
     
     func pinButtonBlock() -> some View {
         Group{
-            if (pin.position == Position.right.rawValue || pin.position == Position.top.rawValue) {PinButtonIcon(pin: pin)}
-            PinButtonLabel(pin: pin)
-            if (pin.position == Position.left.rawValue || pin.position == Position.bottom.rawValue) {PinButtonIcon(pin: pin)}
+            if (pin.position == Position.right.rawValue || pin.position == Position.top.rawValue) {PinIcon(pin: pin)}
+            PinLabel(pin: pin)
+            if (pin.position == Position.left.rawValue || pin.position == Position.bottom.rawValue) {PinIcon(pin: pin)}
         }
     }
 }
@@ -133,31 +133,31 @@ struct PinButton_Previews: PreviewProvider {
         ScrollView {
             HStack{
                 VStack{
-                    PinButton(pin: rPi40Pins[0])
-                    PinButton(pin: rPi40Pins[2])
+                    PinButtonView(pin: rPi40Pins[0])
+                    PinButtonView(pin: rPi40Pins[2])
                 }
                 VStack{
-                    PinButton(pin: rPi40Pins[1])
-                    PinButton(pin: rPi40Pins[3])
+                    PinButtonView(pin: rPi40Pins[1])
+                    PinButtonView(pin: rPi40Pins[3])
                 }
             }
             
             VStack{
                 HStack{
-                    PinButton(pin: analogPins[0])
-                    PinButton(pin: analogPins[2])
+                    PinButtonView(pin: analogPins[0])
+                    PinButtonView(pin: analogPins[2])
                 }
                 HStack{
-                    PinButton(pin: analogPins[1])
-                    PinButton(pin: analogPins[3])
+                    PinButtonView(pin: analogPins[1])
+                    PinButtonView(pin: analogPins[3])
                 }
             }
             
             VStack{
-                PinButton(pin: pwmPins[0])
-                PinButton(pin: pwmPins[1])
-                PinButton(pin: pwmPins[2])
-                PinButton(pin: pwmPins[3])
+                PinButtonView(pin: pwmPins[0])
+                PinButtonView(pin: pwmPins[1])
+                PinButtonView(pin: pwmPins[2])
+                PinButtonView(pin: pwmPins[3])
             }
         }.preferredColorScheme(.light)
     }

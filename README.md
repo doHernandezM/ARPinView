@@ -1,7 +1,7 @@
-# ARPin
-
-## If you need to show some pins, this is your gig.
-
+# ~~ARPin~~
+#Deprecated
+## ~~If you need to show some pins, this is your gig.
+##See [SwiftyPi](https://github.com/doHernandezM/SwiftyPi)
 
 Example:
 

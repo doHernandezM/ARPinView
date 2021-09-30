@@ -49,17 +49,17 @@ public struct PinView: View {
     }
     
     ///Makes the ``Pin`` consistent with the ``PinView``.
-    public var pins: [Pin] {
+    public var pins: [PinButton] {
         get {
-            var internalPins: [Pin] = []
+            var internalPins: [PinButton] = []
             
             switch PinType(rawValue: self.state.type) {
             case .rPi:
-                internalPins = Pin.setPinType(type: .rPi, pins: rPi40Pins)
+                internalPins = PinButton.setPinType(type: .rPi, pins: rPi40Pins)
             case .ic:
-                internalPins = Pin.setPinType(type: .ic, pins: analogPins)
+                internalPins = PinButton.setPinType(type: .ic, pins: analogPins)
             case .pwm:
-                internalPins = Pin.setPinType(type: .pwm, pins: pwmPins)
+                internalPins = PinButton.setPinType(type: .pwm, pins: pwmPins)
             default:
                 break
             }
@@ -75,11 +75,11 @@ public struct PinView: View {
                 let pinLocation = pins.firstIndex(of: pin) ?? 0
                 
                 if (pinLocation % 2 == 0 && self.state.type != PinType.pwm.rawValue) {
-                    ManualStack(isVertical: isHorizontal) {PinButton(pin: pin)
-                        if let individualPin = PinButton(pin: pins[pinLocation + 1]){individualPin}
+                    ManualStack(isVertical: isHorizontal) {PinButtonView(pin: pin)
+                        if let individualPin = PinButtonView(pin: pins[pinLocation + 1]){individualPin}
                     }
                 } else if (self.state.type == PinType.pwm.rawValue) {
-                    PinButton(pin: pin)
+                    PinButtonView(pin: pin)
                 } else {
                     EmptyView()
                 }
@@ -108,14 +108,14 @@ public struct PinView: View {
 struct PinView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            PinView(state: PinViewState(type: PinType.rPi.rawValue, background: Color.clear, horizontal: false), delegate: nil)
+            PinView(state: PinViewState(type: PinType.pwm.rawValue, background: Color.clear, horizontal: false), delegate: nil)
                 .preferredColorScheme(.light)
-            PinView(state: PinViewState(type: PinType.rPi.rawValue, background: Color.clear, horizontal: false), delegate: nil)
+            PinView(state: PinViewState(type: PinType.ic.rawValue, background: Color.clear, horizontal: false), delegate: nil)
                 .preferredColorScheme(.dark)
         }
     }
 }
 
 public protocol PinDelegate {
-    func pinAction(pin:Pin)
+    func pinAction(pin:PinButton)
 }
