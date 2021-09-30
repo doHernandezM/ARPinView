@@ -5,42 +5,47 @@
 //  Created by Dennis Hernandez on 9/24/21.
 //
 
+#if os(OSX) || os(iOS) || os(watchOS) || os(tvOS)
 import SwiftUI
 import ManualStack
+import SwiftyPi
 
 //public typealias Pins = [Pin]
 //extension Pins {
 
 ///Use this to tell the ``PinView`` how to behave.
 public struct PinViewState: Codable {
-    public var type: Int = PinType.pwm.rawValue
+    public var type: DeviceProtocol = DeviceProtocol.PWM
     public var background:Color?
     public var horizontal:Bool = true
     
-    public init(type: Int, background: Color, horizontal: Bool){
+    public init(type: DeviceProtocol, background: Color, horizontal: Bool){
         self.type = type
         self.background = background
         self.horizontal = horizontal
     }
 }
 
-///Determine the type of ``Pin`` array to draw. rPI = 40 Pin Pi, ic = MCP3008, pwm = PCA9685
-public enum PinType: Int, CaseIterable {
-    case rPi, ic, pwm
-}
+/////Determine the type of ``Pin`` array to draw. rPI = 40 Pin Pi, ic = MCP3008, pwm = PCA9685
+//public enum PinType: Int, CaseIterable, Codable {
+//    case rPi, ic, pwm
+//}
 
+public enum Position: Int, Codable {
+    case left, center, right, top, bottom
+}
 ///Provide the ``PinView``  with a ``PinViewState`` to get stated
 public struct PinView: View {
     
     public var state: PinViewState
     public var backgroundColor: Color  {
         get {
-            switch PinType(rawValue: self.state.type) {
-            case .rPi:
+            switch self.state.type {
+            case .GPIO:
                 return .clear
-            case .ic:
+            case .MC3008:
                 return .black.opacity(0.75)
-            case .pwm:
+            case .PWM:
                 return .clear
             default:
                 return .clear
@@ -53,13 +58,13 @@ public struct PinView: View {
         get {
             var internalPins: [PinButton] = []
             
-            switch PinType(rawValue: self.state.type) {
-            case .rPi:
-                internalPins = PinButton.setPinType(type: .rPi, pins: rPi40Pins)
-            case .ic:
-                internalPins = PinButton.setPinType(type: .ic, pins: analogPins)
-            case .pwm:
-                internalPins = PinButton.setPinType(type: .pwm, pins: pwmPins)
+            switch self.state.type {
+            case .GPIO:
+                internalPins = PinButton.setPinType(type: DeviceProtocol.GPIO, pins: rPi40Pins)
+            case .MC3008:
+                internalPins = PinButton.setPinType(type: DeviceProtocol.MC3008, pins: analogPins)
+            case .PCA9685:
+                internalPins = PinButton.setPinType(type: DeviceProtocol.PCA9685, pins: pwmPins)
             default:
                 break
             }
@@ -68,28 +73,28 @@ public struct PinView: View {
     }
     
     public var body: some View {
-        let isHorizontal = (self.state.type == PinType.ic.rawValue)
+        let isHorizontal = (self.state.type == DeviceProtocol.MC3008)
         ScrollView{
         ManualStack(isVertical: !isHorizontal) {
             ForEach(pins, id:\.self){ pin in
                 let pinLocation = pins.firstIndex(of: pin) ?? 0
                 
-                if (pinLocation % 2 == 0 && self.state.type != PinType.pwm.rawValue) {
+                if (pinLocation % 2 == 0 && self.state.type != DeviceProtocol.PCA9685) {
                     ManualStack(isVertical: isHorizontal) {PinButtonView(pin: pin)
                         if let individualPin = PinButtonView(pin: pins[pinLocation + 1]){individualPin}
                     }
-                } else if (self.state.type == PinType.pwm.rawValue) {
+                } else if (self.state.type == DeviceProtocol.PCA9685) {
                     PinButtonView(pin: pin)
                 } else {
                     EmptyView()
                 }
-            }//.padding(Edge.Set.all, 9.0)
+            }.padding(Edge.Set.all, 5.0)
         }.background(state.background)
         }
     }
     
     public init() {
-        self.state = PinViewState(type: PinType.rPi.rawValue, background: .clear, horizontal: false)
+        self.state = PinViewState(type: DeviceProtocol.GPIO, background: .clear, horizontal: false)
     }
 
     public init(state: PinViewState, delegate:PinDelegate?) {
@@ -108,14 +113,17 @@ public struct PinView: View {
 struct PinView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            PinView(state: PinViewState(type: PinType.pwm.rawValue, background: Color.clear, horizontal: false), delegate: nil)
+            PinView(state: PinViewState(type: DeviceProtocol.GPIO, background: Color.gray.opacity(0.25), horizontal: false), delegate: nil)
                 .preferredColorScheme(.light)
-            PinView(state: PinViewState(type: PinType.ic.rawValue, background: Color.clear, horizontal: false), delegate: nil)
+            PinView(state: PinViewState(type: DeviceProtocol.PCA9685, background: Color.gray.opacity(0.25), horizontal: false), delegate: nil)
                 .preferredColorScheme(.dark)
-        }
+            }
+        .frame(width: 600.0, height:800.0)
+        .previewDevice("Mac")
     }
 }
 
 public protocol PinDelegate {
     func pinAction(pin:PinButton)
 }
+#endif

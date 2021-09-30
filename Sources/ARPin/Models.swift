@@ -4,53 +4,43 @@
 //
 //  Created by Dennis Hernandez on 9/24/21.
 //
+#if os(OSX) || os(iOS) || os(watchOS) || os(tvOS)
 
 import SwiftUI
+import SwiftyPi
 
-public enum Position: Int {
-    case left, center, right, top, bottom
-}
-
+//MARK: Pin
 ///Pin model for the Pin view
 ///
 /// - Note: This is different from SwiftPi.Pin.
 public class PinButton: Hashable, Codable {
     public static func == (lhs: PinButton, rhs: PinButton) -> Bool {
-        return lhs.text == rhs.text
+        return lhs.state.text == rhs.state.text
     }
     
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(text)
+        hasher.combine(state.text)
     }
     public var delegate:PinDelegate? = nil
     
     enum CodingKeys: String, CodingKey {
-        case text
-        case color
-        case position
-        case type
         case state
     }
     
-    public var text = "A Pin"
-    
-    public var color: Color = Color.clear
-    public var position: Int? = Position.left.rawValue
-    public var type: Int = PinType.rPi.rawValue
     
     public var state: PinButtonState = PinButtonState(text: "8", enabled: true)
     
     public init() {}
     
-    public init(text: String, color: Color, position: Int, type: Int) {
-        self.text = text
-        self.color = color
-        self.position = position
-        self.type = type
+    public init(text: String, position: Position, type: DeviceProtocol) {
+        self.state.text = text
+        self.state.color = pinColor(deviceProtocol: type)
+        self.state.position = position
+        self.state.type = type
     }
     
     public func isVertical() -> Bool {
-        if (self.position == Position.top.rawValue || self.position == Position.bottom.rawValue){
+        if (self.state.position == Position.top || self.state.position == Position.bottom){
             return true
         }
         return false
@@ -60,9 +50,9 @@ public class PinButton: Hashable, Codable {
         var label = ""
         
         if isVertical() {
-            for (i,char) in self.text.enumerated() {
+            for (i,char) in self.state.text.enumerated() {
                 label = label + [char]
-                if i != (self.text.count - 1) {
+                if i != (self.state.text.count - 1) {
                     label = label + "\r"
                 }
             }
@@ -70,7 +60,7 @@ public class PinButton: Hashable, Codable {
             return label
         }
         
-        return self.text
+        return self.state.text
     }
     
     func frame() -> (width:Double,height:Double) {
@@ -84,9 +74,9 @@ public class PinButton: Hashable, Codable {
         return 26.0
     }
     
-    public static func setPinType(type:PinType, pins:[PinButton]) -> [PinButton]{
+    public static func setPinType(type:DeviceProtocol, pins:[PinButton]) -> [PinButton]{
         for (_,pin) in pins.enumerated() {
-            pin.type = type.rawValue
+            pin.state.type = type
         }
         return pins
     }
@@ -94,83 +84,84 @@ public class PinButton: Hashable, Codable {
 }
 
 public var rPi40Pins: [PinButton] = [
-    PinButton(text: "3v3.01", color: .orange, position: Position.left.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "5v.01", color: .red, position: Position.right.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.02", color: .pink, position: Position.left.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "5v.02", color: .red, position: Position.right.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.03", color: .pink, position: Position.left.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "Ground.01", color: .gray, position: Position.right.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.04", color: .green, position: Position.left.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.14", color: .purple, position: Position.right.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "Ground.02", color: .gray, position: Position.left.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.15", color: .purple, position: Position.right.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.17", color: .green, position: Position.left.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.18", color: .green, position: Position.right.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.27", color: .green, position: Position.left.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "Ground.03", color: .gray, position: Position.right.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.22", color: .green, position: Position.left.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.23", color: .green, position: Position.right.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "3v3.02", color: .orange, position: Position.left.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.24", color: .green, position: Position.right.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.10", color: .blue, position: Position.left.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "Ground.04", color: .gray, position: Position.right.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.09", color: .blue, position: Position.left.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.25", color: .green, position: Position.right.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.11", color: .blue, position: Position.left.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.08", color: .blue, position: Position.right.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "Ground.05", color: .gray, position: Position.left.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.07", color: .blue, position: Position.right.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "I2C.27", color: .yellow, position: Position.left.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "I2C.28", color: .yellow, position: Position.right.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.05", color: .green, position: Position.left.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "Ground.06", color: .gray, position: Position.right.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.06", color: .green, position: Position.left.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.12", color: .green, position: Position.right.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.13", color: .green, position: Position.left.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "Ground.07", color: .gray, position: Position.right.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.19", color: .green, position: Position.left.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.16", color: .green, position: Position.right.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.26", color: .green, position: Position.left.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.20", color: .green, position: Position.right.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "Ground.08", color: .gray, position: Position.left.rawValue, type: PinType.rPi.rawValue),
-    PinButton(text: "GPIO.21", color: .green, position: Position.right.rawValue, type: PinType.rPi.rawValue),
+    PinButton(text: "3v3.01", position: Position.left, type: DeviceProtocol.v3),
+    PinButton(text: "5v.01", position: Position.right, type: DeviceProtocol.v5),
+    PinButton(text: "GPIO.02", position: Position.left, type: DeviceProtocol.GPIO),
+    PinButton(text: "5v.02", position: Position.right, type: DeviceProtocol.v5),
+    PinButton(text: "GPIO.03", position: Position.left, type: DeviceProtocol.GPIO),
+    PinButton(text: "Ground.01", position: Position.right, type: DeviceProtocol.ground),
+    PinButton(text: "GPIO.04", position: Position.left, type: DeviceProtocol.GPIO),
+    PinButton(text: "GPIO.14", position: Position.right, type: DeviceProtocol.UART),
+    PinButton(text: "Ground.02", position: Position.left, type: DeviceProtocol.ground),
+    PinButton(text: "GPIO.15", position: Position.right, type: DeviceProtocol.UART),
+    PinButton(text: "GPIO.17", position: Position.left, type: DeviceProtocol.GPIO),
+    PinButton(text: "GPIO.18", position: Position.right, type: DeviceProtocol.PWM),
+    PinButton(text: "GPIO.27", position: Position.left, type: DeviceProtocol.GPIO),
+    PinButton(text: "Ground.03", position: Position.right, type: DeviceProtocol.ground),
+    PinButton(text: "GPIO.22", position: Position.left, type: DeviceProtocol.GPIO),
+    PinButton(text: "GPIO.23", position: Position.right, type: DeviceProtocol.GPIO),
+    PinButton(text: "3v3.02", position: Position.left, type: DeviceProtocol.v3),
+    PinButton(text: "GPIO.24", position: Position.right, type: DeviceProtocol.GPIO),
+    PinButton(text: "GPIO.10", position: Position.left, type: DeviceProtocol.SPI),
+    PinButton(text: "Ground.04", position: Position.right, type: DeviceProtocol.ground),
+    PinButton(text: "GPIO.09", position: Position.left, type: DeviceProtocol.SPI),
+    PinButton(text: "GPIO.25", position: Position.right, type: DeviceProtocol.GPIO),
+    PinButton(text: "GPIO.11", position: Position.left, type: DeviceProtocol.SPI),
+    PinButton(text: "GPIO.08", position: Position.right, type: DeviceProtocol.SPI),
+    PinButton(text: "Ground.05", position: Position.left, type: DeviceProtocol.ground),
+    PinButton(text: "GPIO.07", position: Position.right, type: DeviceProtocol.SPI),
+    PinButton(text: "I2C.27", position: Position.left, type: DeviceProtocol.I2C),
+    PinButton(text: "I2C.28", position: Position.right, type: DeviceProtocol.I2C),
+    PinButton(text: "GPIO.05", position: Position.left, type: DeviceProtocol.GPIO),
+    PinButton(text: "Ground.06", position: Position.right, type: DeviceProtocol.ground),
+    PinButton(text: "GPIO.06", position: Position.left, type: DeviceProtocol.GPIO),
+    PinButton(text: "GPIO.12", position: Position.right, type: DeviceProtocol.PWM),
+    PinButton(text: "GPIO.13", position: Position.left, type: DeviceProtocol.PWM),
+    PinButton(text: "Ground.07", position: Position.right, type: DeviceProtocol.ground),
+    PinButton(text: "GPIO.19", position: Position.left, type: DeviceProtocol.PWM),
+    PinButton(text: "GPIO.16", position: Position.right, type: DeviceProtocol.GPIO),
+    PinButton(text: "GPIO.26", position: Position.left, type: DeviceProtocol.GPIO),
+    PinButton(text: "GPIO.20", position: Position.right, type: DeviceProtocol.GPIO),
+    PinButton(text: "Ground.08", position: Position.left, type: DeviceProtocol.ground),
+    PinButton(text: "GPIO.21", position: Position.right, type: DeviceProtocol.GPIO),
 ]
 
 public var analogPins: [PinButton] = [
-    PinButton(text: "vDD", color: .gray, position: Position.top.rawValue, type: PinType.ic.rawValue),
-    PinButton(text: "A0", color: .gray, position: Position.bottom.rawValue, type: PinType.ic.rawValue),
-    PinButton(text: "vREF", color: .gray, position: Position.top.rawValue, type: PinType.ic.rawValue),
-    PinButton(text: "A1", color: .gray, position: Position.bottom.rawValue, type: PinType.ic.rawValue),
-    PinButton(text: "aGND", color: .gray, position: Position.top.rawValue, type: PinType.ic.rawValue),
-    PinButton(text: "A2", color: .gray, position: Position.bottom.rawValue, type: PinType.ic.rawValue),
-    PinButton(text: "SCLK", color: .gray, position: Position.top.rawValue, type: PinType.ic.rawValue),
-    PinButton(text: "A3", color: .gray, position: Position.bottom.rawValue, type: PinType.ic.rawValue),
-    PinButton(text: "MISO", color: .gray, position: Position.top.rawValue, type: PinType.ic.rawValue),
-    PinButton(text: "A4", color: .gray, position: Position.bottom.rawValue, type: PinType.ic.rawValue),
-    PinButton(text: "MOSI", color: .gray, position: Position.top.rawValue, type: PinType.ic.rawValue),
-    PinButton(text: "A5", color: .gray, position: Position.bottom.rawValue, type: PinType.ic.rawValue),
-    PinButton(text: "CE", color: .gray, position: Position.top.rawValue, type: PinType.ic.rawValue),
-    PinButton(text: "A6", color: .gray, position: Position.bottom.rawValue, type: PinType.ic.rawValue),
-    PinButton(text: "dGND", color: .gray, position: Position.top.rawValue, type: PinType.ic.rawValue),
-    PinButton(text: "A7", color: .gray, position: Position.bottom.rawValue, type: PinType.ic.rawValue),
+    PinButton(text: "vDD", position: Position.top, type: DeviceProtocol.MC3008),
+    PinButton(text: "A0", position: Position.bottom, type: DeviceProtocol.MC3008),
+    PinButton(text: "vREF", position: Position.top, type: DeviceProtocol.MC3008),
+    PinButton(text: "A1", position: Position.bottom, type: DeviceProtocol.MC3008),
+    PinButton(text: "aGND", position: Position.top, type: DeviceProtocol.MC3008),
+    PinButton(text: "A2", position: Position.bottom, type: DeviceProtocol.MC3008),
+    PinButton(text: "SCLK", position: Position.top, type: DeviceProtocol.MC3008),
+    PinButton(text: "A3", position: Position.bottom, type: DeviceProtocol.MC3008),
+    PinButton(text: "MISO", position: Position.top, type: DeviceProtocol.MC3008),
+    PinButton(text: "A4", position: Position.bottom, type: DeviceProtocol.MC3008),
+    PinButton(text: "MOSI", position: Position.top, type: DeviceProtocol.MC3008),
+    PinButton(text: "A5", position: Position.bottom, type: DeviceProtocol.MC3008),
+    PinButton(text: "CE", position: Position.top, type: DeviceProtocol.MC3008),
+    PinButton(text: "A6", position: Position.bottom, type: DeviceProtocol.MC3008),
+    PinButton(text: "dGND", position: Position.top, type: DeviceProtocol.MC3008),
+    PinButton(text: "A7", position: Position.bottom, type: DeviceProtocol.MC3008),
 ]
 
 public var pwmPins: [PinButton] = [
-    PinButton(text: "PWM.00", color: .yellow, position: Position.right.rawValue, type: PinType.pwm.rawValue),
-    PinButton(text: "PWM.01", color: .yellow, position: Position.right.rawValue, type: PinType.pwm.rawValue),
-    PinButton(text: "PWM.02", color: .yellow, position: Position.right.rawValue, type: PinType.pwm.rawValue),
-    PinButton(text: "PWM.03", color: .yellow, position: Position.right.rawValue, type: PinType.pwm.rawValue),
-    PinButton(text: "PWM.04", color: .yellow, position: Position.right.rawValue, type: PinType.pwm.rawValue),
-    PinButton(text: "PWM.05", color: .yellow, position: Position.right.rawValue, type: PinType.pwm.rawValue),
-    PinButton(text: "PWM.06", color: .yellow, position: Position.right.rawValue, type: PinType.pwm.rawValue),
-    PinButton(text: "PWM.07", color: .yellow, position: Position.right.rawValue, type: PinType.pwm.rawValue),
-    PinButton(text: "PWM.08", color: .yellow, position: Position.right.rawValue, type: PinType.pwm.rawValue),
-    PinButton(text: "PWM.09", color: .yellow, position: Position.right.rawValue, type: PinType.pwm.rawValue),
-    PinButton(text: "PWM.10", color: .yellow, position: Position.right.rawValue, type: PinType.pwm.rawValue),
-    PinButton(text: "PWM.11", color: .yellow, position: Position.right.rawValue, type: PinType.pwm.rawValue),
-    PinButton(text: "PWM.12", color: .yellow, position: Position.right.rawValue, type: PinType.pwm.rawValue),
-    PinButton(text: "PWM.13", color: .yellow, position: Position.right.rawValue, type: PinType.pwm.rawValue),
-    PinButton(text: "PWM.14", color: .yellow, position: Position.right.rawValue, type: PinType.pwm.rawValue),
-    PinButton(text: "PWM.15", color: .yellow, position: Position.right.rawValue, type: PinType.pwm.rawValue),
+    PinButton(text: "PWM.00", position: Position.right, type: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.01", position: Position.right, type: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.02", position: Position.right, type: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.03", position: Position.right, type: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.04", position: Position.right, type: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.05", position: Position.right, type: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.06", position: Position.right, type: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.07", position: Position.right, type: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.08", position: Position.right, type: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.09", position: Position.right, type: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.10", position: Position.right, type: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.11", position: Position.right, type: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.12", position: Position.right, type: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.13", position: Position.right, type: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.14", position: Position.right, type: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.15", position: Position.right, type: DeviceProtocol.PCA9685),
 ]
 
+#endif

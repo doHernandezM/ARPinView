@@ -4,6 +4,7 @@
 //
 //  Created by Dennis Hernandez on 9/24/21.
 //
+#if os(OSX) || os(iOS) || os(watchOS) || os(tvOS)
 
 import Foundation
 import SwiftUI
@@ -70,3 +71,4 @@ extension Color: Codable {
         try container.encode(colorComponents.blue, forKey: .blue)
     }
 }
+#endif
