@@ -93,23 +93,23 @@ struct PinLabel: View {
 }
 
 public struct PinButtonView: View {
-    public var pin: PinButton
+    public var pinButton: PinButton
 
     public var body: some View {
         return Group{
-            if pin.isVertical(){
+            if pinButton.isVertical(){
                 VStack{
                     pinButtonBlock()
                 }
                 
             } else {
                 HStack{
-                    if (pin.state.deviceProtocol == DeviceProtocol.PCA9685) {
-                        pinCircle(color: .black, pin: pin)
+                    if (pinButton.state.deviceProtocol == DeviceProtocol.PCA9685) {
+                        pinCircle(color: .black, pin: pinButton)
                             .padding(0.0)
-                        pinCircle(color: .red, pin: pin)
+                        pinCircle(color: .red, pin: pinButton)
                             .padding(0.0)
-                        pinCircle(color: .yellow, pin: pin)
+                        pinCircle(color: .yellow, pin: pinButton)
                             .padding(0.0)
                         
                     }
@@ -117,27 +117,27 @@ public struct PinButtonView: View {
                 }
             }
         }.onTapGesture {
-            self.pin.delegate?.pinAction(pin: self.pin)
+            self.pinButton.delegate?.pinAction(pin: self.pinButton)
         }
     }
     
     public init() {
-        self.pin = PinButton()
+        self.pinButton = PinButton()
     }
 
     
     public init(pin:PinButton) {
-        self.pin = pin
+        self.pinButton = pin
     }
     
 
     
     func pinButtonBlock() -> some View {
         Group{
-            if (pin.state.position == Position.right || pin.state.position == Position.top) && pin.state.deviceProtocol != DeviceProtocol.PCA9685 {PinIcon(pin: pin).padding(0.0)}
-            PinLabel(pin: pin)
+            if (pinButton.state.position == Position.right || pinButton.state.position == Position.top) && pinButton.state.deviceProtocol != DeviceProtocol.PCA9685 {PinIcon(pin: pinButton).padding(0.0)}
+            PinLabel(pin: pinButton)
                 .padding(0.0)
-            if (pin.state.position == Position.left || pin.state.position == Position.bottom) {PinIcon(pin: pin).padding(0.0)}
+            if (pinButton.state.position == Position.left || pinButton.state.position == Position.bottom) {PinIcon(pin: pinButton).padding(0.0)}
         }
     }
 }

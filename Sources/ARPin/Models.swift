@@ -20,7 +20,7 @@ public class PinButton: Hashable, Codable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(state.text)
     }
-    public var delegate:PinDelegate? = nil
+    public var delegate:PinButtonDelegate? = nil
     
     enum CodingKeys: String, CodingKey {
         case state

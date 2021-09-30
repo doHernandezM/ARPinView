@@ -53,14 +53,13 @@ public struct PinView: View {
         }
     }
     
-    internal var internalPins: [PinButton]? = nil
+//    internal var internalPins: [PinButton]? = nil
+    ///
+    public var delegate: PinButtonDelegate? = nil
+    
     ///Makes the ``Pin`` consistent with the ``PinView``.
     public var pins: [PinButton] {
         get {
-            return setPinsDelegate(delegate: nil)
-        }
-    }
-    func setPinsDelegate(delegate:PinDelegate?) -> [PinButton] {
         var internalPins: [PinButton] = []
         
         switch self.state.type {
@@ -74,12 +73,12 @@ public struct PinView: View {
             break
         }
         for pin in internalPins {
-            if delegate == nil {continue}
-            pin.delegate = delegate
+            if self.delegate == nil {continue}
+            pin.delegate = self.delegate!
         }
         return internalPins
     }
-    
+    }
     public var body: some View {
         let isHorizontal = (self.state.type == DeviceProtocol.MCP3008)
         ScrollView{
@@ -106,7 +105,7 @@ public struct PinView: View {
         self.state = PinViewState(type: DeviceProtocol.GPIO, background: .clear, horizontal: false)
     }
 
-    public init(state: PinViewState, delegate:PinDelegate?) {
+    public init(state: PinViewState, delegate:PinButtonDelegate?) {
         self.state = state
     }
     
@@ -129,7 +128,7 @@ struct PinView_Previews: PreviewProvider {
     }
 }
 
-public protocol PinDelegate {
+public protocol PinButtonDelegate {
     func pinAction(pin:PinButton)
 }
 #endif
