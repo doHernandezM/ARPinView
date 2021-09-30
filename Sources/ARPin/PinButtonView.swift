@@ -101,13 +101,18 @@ public struct PinButtonView: View {
             if pin.isVertical(){
                 VStack{
                     pinButtonBlock()
-                }.clipped()
+                }
+                
             } else {
                 HStack{
                     if (pin.state.deviceProtocol == DeviceProtocol.PCA9685) {
                         pinCircle(color: .black, pin: pin)
+                            .padding(0.0)
                         pinCircle(color: .red, pin: pin)
+                            .padding(0.0)
                         pinCircle(color: .yellow, pin: pin)
+                            .padding(0.0)
+                        
                     }
                     pinButtonBlock()
                 }
@@ -130,9 +135,10 @@ public struct PinButtonView: View {
     
     func pinButtonBlock() -> some View {
         Group{
-            if (pin.state.position == Position.right || pin.state.position == Position.top) && pin.state.deviceProtocol != DeviceProtocol.PCA9685 {PinIcon(pin: pin)}
+            if (pin.state.position == Position.right || pin.state.position == Position.top) && pin.state.deviceProtocol != DeviceProtocol.PCA9685 {PinIcon(pin: pin).padding(0.0)}
             PinLabel(pin: pin)
-            if (pin.state.position == Position.left || pin.state.position == Position.bottom) {PinIcon(pin: pin)}
+                .padding(0.0)
+            if (pin.state.position == Position.left || pin.state.position == Position.bottom) {PinIcon(pin: pin).padding(0.0)}
         }
     }
 }
@@ -153,12 +159,12 @@ struct PinButton_Previews: PreviewProvider {
             
             VStack{
                 HStack{
-                    PinButtonView(pin: analogPins[0])
-                    PinButtonView(pin: analogPins[2])
+                    PinButtonView(pin: analogButtons[0])
+                    PinButtonView(pin: analogButtons[2])
                 }
                 HStack{
-                    PinButtonView(pin: analogPins[1])
-                    PinButtonView(pin: analogPins[3])
+                    PinButtonView(pin: analogButtons[1])
+                    PinButtonView(pin: analogButtons[3])
                 }
             }
             

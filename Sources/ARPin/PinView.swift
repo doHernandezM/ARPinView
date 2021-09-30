@@ -43,7 +43,7 @@ public struct PinView: View {
             switch self.state.type {
             case .GPIO:
                 return .clear
-            case .MC3008:
+            case .MCP3008:
                 return .black.opacity(0.75)
             case .PWM:
                 return .clear
@@ -56,24 +56,30 @@ public struct PinView: View {
     ///Makes the ``Pin`` consistent with the ``PinView``.
     public var pins: [PinButton] {
         get {
-            var internalPins: [PinButton] = []
-            
-            switch self.state.type {
-            case .GPIO:
-                internalPins = PinButton.setPinProtocol(deviceProtocol: DeviceProtocol.GPIO, pins: rPi40Buttons)
-            case .MC3008:
-                internalPins = PinButton.setPinProtocol(deviceProtocol: DeviceProtocol.MC3008, pins: analogPins)
-            case .PCA9685:
-                internalPins = PinButton.setPinProtocol(deviceProtocol: DeviceProtocol.PCA9685, pins: pwmPins)
-            default:
-                break
-            }
-            return internalPins
+            return setPinsDelegate(delegate: nil)
         }
+    }
+    func setPinsDelegate(delegate:PinDelegate?) -> [PinButton] {
+        var internalPins: [PinButton] = []
+        
+        switch self.state.type {
+        case .GPIO:
+            internalPins = PinButton.setPinProtocol(deviceProtocol: DeviceProtocol.GPIO, pins: rPi40Buttons)
+        case .MCP3008:
+            internalPins = PinButton.setPinProtocol(deviceProtocol: DeviceProtocol.MCP3008, pins: analogButtons)
+        case .PCA9685:
+            internalPins = PinButton.setPinProtocol(deviceProtocol: DeviceProtocol.PCA9685, pins: pwmPins)
+        default:
+            break
+        }
+        for pin in internalPins {
+            pin.delegate = delegate
+        }
+        return internalPins
     }
     
     public var body: some View {
-        let isHorizontal = (self.state.type == DeviceProtocol.MC3008)
+        let isHorizontal = (self.state.type == DeviceProtocol.MCP3008)
         ScrollView{
         ManualStack(isVertical: !isHorizontal) {
             ForEach(pins, id:\.self){ pin in
@@ -84,6 +90,7 @@ public struct PinView: View {
                         if let individualPin = PinButtonView(pin: pins[pinLocation + 1]){individualPin}
                     }
                 } else if (self.state.type == DeviceProtocol.PCA9685) {
+                    
                     PinButtonView(pin: pin)
                 } else {
                     EmptyView()
@@ -99,9 +106,6 @@ public struct PinView: View {
 
     public init(state: PinViewState, delegate:PinDelegate?) {
         self.state = state
-        for pin in pins {
-            pin.delegate = delegate
-        }
     }
     
     public init(state: PinViewState) {
