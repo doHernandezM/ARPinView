@@ -68,7 +68,7 @@ public struct PinView: View {
         case .MCP3008:
             internalPins = PinButton.setPinProtocol(deviceProtocol: DeviceProtocol.MCP3008, pins: analogButtons)
         case .PCA9685:
-            internalPins = PinButton.setPinProtocol(deviceProtocol: DeviceProtocol.PCA9685, pins: pwmPins)
+            internalPins = PinButton.setPinProtocol(deviceProtocol: DeviceProtocol.PCA9685, pins: pca9685Buttons)
         default:
             break
         }

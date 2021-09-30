@@ -5,7 +5,6 @@
 //  Created by Dennis Hernandez on 9/23/21.
 //
 
-#if os(OSX) || os(iOS) || os(watchOS) || os(tvOS)
 import SwiftUI
 import SwiftyPi
 
@@ -169,14 +168,12 @@ struct PinButton_Previews: PreviewProvider {
             }
             
             VStack{
-                PinButtonView(pin: pwmPins[0])
-                PinButtonView(pin: pwmPins[1])
-                PinButtonView(pin: pwmPins[2])
-                PinButtonView(pin: pwmPins[3])
+                PinButtonView(pin: pca9685Buttons[0])
+                PinButtonView(pin: pca9685Buttons[1])
+                PinButtonView(pin: pca9685Buttons[2])
+                PinButtonView(pin: pca9685Buttons[3])
             }
         }.preferredColorScheme(.light)
     }
     
 }
-
-#endif

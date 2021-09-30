@@ -4,7 +4,6 @@
 //
 //  Created by Dennis Hernandez on 9/24/21.
 //
-#if os(OSX) || os(iOS) || os(watchOS) || os(tvOS)
 
 import SwiftUI
 import SwiftyPi
@@ -81,6 +80,34 @@ public class PinButton: Hashable, Codable {
         return pins
     }
     
+    public func pinColor(deviceProtocol:DeviceProtocol) -> Color {
+        switch deviceProtocol {
+        case .GPIO:
+            return Color.green
+        case .PWM:
+            return Color.yellow
+        case .MCP3008:
+            return Color.gray
+        case .PCA9685:
+            return Color.yellow
+        case .UART:
+            return Color.purple
+        case .I2C:
+            return Color.red
+        case .SPI:
+            return Color.blue
+            
+        case .ground:
+            return Color.gray
+        case .v5:
+            return Color.pink
+        case .v3:
+            return Color.orange
+        }
+        
+        //    return .accentColor
+    }
+    
 }
 
 public var rPi40Buttons:[PinButton] {
@@ -110,36 +137,14 @@ public var analogButtons:[PinButton] {
 }
 
 
-public var pwmPins: [PinButton] {
+public var pca9685Buttons: [PinButton] {
     get{
         var allButtons:[PinButton] = []
-
-        for (_,pin) in SwiftyPi.pwmPins.enumerated() {
+        
+        for (_,pin) in SwiftyPi.pca9685pins.enumerated() {
             print(pin.name)
             allButtons.append(PinButton(text: pin.name, position: Position.right, deviceProtocol: DeviceProtocol.PCA9685))
         }
         return allButtons
-//        PinButton(text: "PWM.00", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
-        
-//        return [
-//        PinButton(text: "PWM.00", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
-//        PinButton(text: "PWM.01", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
-//        PinButton(text: "PWM.02", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
-//        PinButton(text: "PWM.03", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
-//        PinButton(text: "PWM.04", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
-//        PinButton(text: "PWM.05", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
-//        PinButton(text: "PWM.06", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
-//        PinButton(text: "PWM.07", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
-//        PinButton(text: "PWM.08", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
-//        PinButton(text: "PWM.09", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
-//        PinButton(text: "PWM.10", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
-//        PinButton(text: "PWM.11", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
-//        PinButton(text: "PWM.12", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
-//        PinButton(text: "PWM.13", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
-//        PinButton(text: "PWM.14", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
-//        PinButton(text: "PWM.15", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685)
-//]
         
     }}
-
-#endif
