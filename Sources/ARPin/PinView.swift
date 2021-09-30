@@ -73,7 +73,6 @@ public struct PinView: View {
             break
         }
         for pin in internalPins {
-            if self.delegate == nil {continue}
             pin.delegate = self.delegate!
         }
         return internalPins
@@ -107,6 +106,7 @@ public struct PinView: View {
 
     public init(state: PinViewState, delegate:PinButtonDelegate?) {
         self.state = state
+        self.delegate = delegate
     }
     
     public init(state: PinViewState) {
