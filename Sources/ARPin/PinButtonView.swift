@@ -17,7 +17,7 @@ public struct PinButtonState: Codable {
     
     public var color: Color = Color.clear
     public var position: Position? = Position.left
-    public var type: DeviceProtocol = DeviceProtocol.GPIO
+    public var deviceProtocol: DeviceProtocol = DeviceProtocol.GPIO
     }
 
 func pinCircle(color:Color, pin:PinButton) -> some View {
@@ -40,7 +40,7 @@ struct PinIcon:View {
     
     var body: some View {
         ZStack {
-            if pin.state.type == DeviceProtocol.PCA9685 {
+            if pin.state.deviceProtocol == DeviceProtocol.PCA9685 {
                 RoundedRectangle(cornerRadius: 9.0)
                     .frame(width:pin.squareHeight(), height: pin.squareHeight())
                     .foregroundColor(pin.state.color)
@@ -64,7 +64,7 @@ struct PinLabel: View {
     
     var body: some View {
         ZStack {
-            if pin.state.type != DeviceProtocol.PCA9685 {
+            if pin.state.deviceProtocol != DeviceProtocol.PCA9685 {
                 RoundedRectangle(cornerRadius: 9.0)
                     .clipped()
                     .frame(width: pin.frame().width, height: pin.frame().height)
@@ -104,7 +104,7 @@ public struct PinButtonView: View {
                 }.clipped()
             } else {
                 HStack{
-                    if (pin.state.type == DeviceProtocol.PCA9685) {
+                    if (pin.state.deviceProtocol == DeviceProtocol.PCA9685) {
                         pinCircle(color: .black, pin: pin)
                         pinCircle(color: .red, pin: pin)
                         pinCircle(color: .yellow, pin: pin)
@@ -130,7 +130,7 @@ public struct PinButtonView: View {
     
     func pinButtonBlock() -> some View {
         Group{
-            if (pin.state.position == Position.right || pin.state.position == Position.top) && pin.state.type != DeviceProtocol.PCA9685 {PinIcon(pin: pin)}
+            if (pin.state.position == Position.right || pin.state.position == Position.top) && pin.state.deviceProtocol != DeviceProtocol.PCA9685 {PinIcon(pin: pin)}
             PinLabel(pin: pin)
             if (pin.state.position == Position.left || pin.state.position == Position.bottom) {PinIcon(pin: pin)}
         }
@@ -142,12 +142,12 @@ struct PinButton_Previews: PreviewProvider {
         Group {
             HStack{
                 VStack{
-                    PinButtonView(pin: rPi40Pins[0])
-                    PinButtonView(pin: rPi40Pins[2])
+                    PinButtonView(pin: rPi40Buttons[0])
+                    PinButtonView(pin: rPi40Buttons[2])
                 }
                 VStack{
-                    PinButtonView(pin: rPi40Pins[1])
-                    PinButtonView(pin: rPi40Pins[3])
+                    PinButtonView(pin: rPi40Buttons[1])
+                    PinButtonView(pin: rPi40Buttons[3])
                 }
             }
             

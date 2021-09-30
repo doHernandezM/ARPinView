@@ -32,11 +32,11 @@ public class PinButton: Hashable, Codable {
     
     public init() {}
     
-    public init(text: String, position: Position, type: DeviceProtocol) {
+    public init(text: String, position: Position, deviceProtocol: DeviceProtocol) {
         self.state.text = text
-        self.state.color = pinColor(deviceProtocol: type)
+        self.state.color = pinColor(deviceProtocol: deviceProtocol)
         self.state.position = position
-        self.state.type = type
+        self.state.deviceProtocol = deviceProtocol
     }
     
     public func isVertical() -> Bool {
@@ -74,94 +74,107 @@ public class PinButton: Hashable, Codable {
         return 26.0
     }
     
-    public static func setPinType(type:DeviceProtocol, pins:[PinButton]) -> [PinButton]{
+    public static func setPinProtocol(deviceProtocol:DeviceProtocol, pins:[PinButton]) -> [PinButton]{
         for (_,pin) in pins.enumerated() {
-            pin.state.type = type
+            pin.state.deviceProtocol = deviceProtocol
         }
         return pins
     }
     
 }
 
-public var rPi40Pins: [PinButton] = [
-    PinButton(text: "3v3.01", position: Position.left, type: DeviceProtocol.v3),
-    PinButton(text: "5v.01", position: Position.right, type: DeviceProtocol.v5),
-    PinButton(text: "GPIO.02", position: Position.left, type: DeviceProtocol.GPIO),
-    PinButton(text: "5v.02", position: Position.right, type: DeviceProtocol.v5),
-    PinButton(text: "GPIO.03", position: Position.left, type: DeviceProtocol.GPIO),
-    PinButton(text: "Ground.01", position: Position.right, type: DeviceProtocol.ground),
-    PinButton(text: "GPIO.04", position: Position.left, type: DeviceProtocol.GPIO),
-    PinButton(text: "GPIO.14", position: Position.right, type: DeviceProtocol.UART),
-    PinButton(text: "Ground.02", position: Position.left, type: DeviceProtocol.ground),
-    PinButton(text: "GPIO.15", position: Position.right, type: DeviceProtocol.UART),
-    PinButton(text: "GPIO.17", position: Position.left, type: DeviceProtocol.GPIO),
-    PinButton(text: "GPIO.18", position: Position.right, type: DeviceProtocol.PWM),
-    PinButton(text: "GPIO.27", position: Position.left, type: DeviceProtocol.GPIO),
-    PinButton(text: "Ground.03", position: Position.right, type: DeviceProtocol.ground),
-    PinButton(text: "GPIO.22", position: Position.left, type: DeviceProtocol.GPIO),
-    PinButton(text: "GPIO.23", position: Position.right, type: DeviceProtocol.GPIO),
-    PinButton(text: "3v3.02", position: Position.left, type: DeviceProtocol.v3),
-    PinButton(text: "GPIO.24", position: Position.right, type: DeviceProtocol.GPIO),
-    PinButton(text: "GPIO.10", position: Position.left, type: DeviceProtocol.SPI),
-    PinButton(text: "Ground.04", position: Position.right, type: DeviceProtocol.ground),
-    PinButton(text: "GPIO.09", position: Position.left, type: DeviceProtocol.SPI),
-    PinButton(text: "GPIO.25", position: Position.right, type: DeviceProtocol.GPIO),
-    PinButton(text: "GPIO.11", position: Position.left, type: DeviceProtocol.SPI),
-    PinButton(text: "GPIO.08", position: Position.right, type: DeviceProtocol.SPI),
-    PinButton(text: "Ground.05", position: Position.left, type: DeviceProtocol.ground),
-    PinButton(text: "GPIO.07", position: Position.right, type: DeviceProtocol.SPI),
-    PinButton(text: "I2C.27", position: Position.left, type: DeviceProtocol.I2C),
-    PinButton(text: "I2C.28", position: Position.right, type: DeviceProtocol.I2C),
-    PinButton(text: "GPIO.05", position: Position.left, type: DeviceProtocol.GPIO),
-    PinButton(text: "Ground.06", position: Position.right, type: DeviceProtocol.ground),
-    PinButton(text: "GPIO.06", position: Position.left, type: DeviceProtocol.GPIO),
-    PinButton(text: "GPIO.12", position: Position.right, type: DeviceProtocol.PWM),
-    PinButton(text: "GPIO.13", position: Position.left, type: DeviceProtocol.PWM),
-    PinButton(text: "Ground.07", position: Position.right, type: DeviceProtocol.ground),
-    PinButton(text: "GPIO.19", position: Position.left, type: DeviceProtocol.PWM),
-    PinButton(text: "GPIO.16", position: Position.right, type: DeviceProtocol.GPIO),
-    PinButton(text: "GPIO.26", position: Position.left, type: DeviceProtocol.GPIO),
-    PinButton(text: "GPIO.20", position: Position.right, type: DeviceProtocol.GPIO),
-    PinButton(text: "Ground.08", position: Position.left, type: DeviceProtocol.ground),
-    PinButton(text: "GPIO.21", position: Position.right, type: DeviceProtocol.GPIO),
-]
+public var rPi40Buttons:[PinButton] {
+    get{
+        var allButtons:[PinButton] = []
+        
+        for (i,pin) in SwiftyPi.rPi40Pins.enumerated() {
+            var position = Position.right
+            if (i % 2 == 0) {position = .left}
+            allButtons.append(PinButton(text: pin.name, position: position, deviceProtocol: pin.deviceProtocol))
+        }
+        return allButtons
+    }
+}
+
+//public var rPi40Pins: [PinButton] = [
+//    PinButton(text: "3v3.01", position: Position.left, deviceProtocol: DeviceProtocol.v3),
+//    PinButton(text: "5v.01", position: Position.right, deviceProtocol: DeviceProtocol.v5),
+//    PinButton(text: "GPIO.02", position: Position.left, deviceProtocol: DeviceProtocol.GPIO),
+//    PinButton(text: "5v.02", position: Position.right, deviceProtocol: DeviceProtocol.v5),
+//    PinButton(text: "GPIO.03", position: Position.left, deviceProtocol: DeviceProtocol.GPIO),
+//    PinButton(text: "Ground.01", position: Position.right, deviceProtocol: DeviceProtocol.ground),
+//    PinButton(text: "GPIO.04", position: Position.left, deviceProtocol: DeviceProtocol.GPIO),
+//    PinButton(text: "GPIO.14", position: Position.right, deviceProtocol: DeviceProtocol.UART),
+//    PinButton(text: "Ground.02", position: Position.left, deviceProtocol: DeviceProtocol.ground),
+//    PinButton(text: "GPIO.15", position: Position.right, deviceProtocol: DeviceProtocol.UART),
+//    PinButton(text: "GPIO.17", position: Position.left, deviceProtocol: DeviceProtocol.GPIO),
+//    PinButton(text: "GPIO.18", position: Position.right, deviceProtocol: DeviceProtocol.PWM),
+//    PinButton(text: "GPIO.27", position: Position.left, deviceProtocol: DeviceProtocol.GPIO),
+//    PinButton(text: "Ground.03", position: Position.right, deviceProtocol: DeviceProtocol.ground),
+//    PinButton(text: "GPIO.22", position: Position.left, deviceProtocol: DeviceProtocol.GPIO),
+//    PinButton(text: "GPIO.23", position: Position.right, deviceProtocol: DeviceProtocol.GPIO),
+//    PinButton(text: "3v3.02", position: Position.left, deviceProtocol: DeviceProtocol.v3),
+//    PinButton(text: "GPIO.24", position: Position.right, deviceProtocol: DeviceProtocol.GPIO),
+//    PinButton(text: "GPIO.10", position: Position.left, deviceProtocol: DeviceProtocol.SPI),
+//    PinButton(text: "Ground.04", position: Position.right, deviceProtocol: DeviceProtocol.ground),
+//    PinButton(text: "GPIO.09", position: Position.left, deviceProtocol: DeviceProtocol.SPI),
+//    PinButton(text: "GPIO.25", position: Position.right, deviceProtocol: DeviceProtocol.GPIO),
+//    PinButton(text: "GPIO.11", position: Position.left, deviceProtocol: DeviceProtocol.SPI),
+//    PinButton(text: "GPIO.08", position: Position.right, deviceProtocol: DeviceProtocol.SPI),
+//    PinButton(text: "Ground.05", position: Position.left, deviceProtocol: DeviceProtocol.ground),
+//    PinButton(text: "GPIO.07", position: Position.right, deviceProtocol: DeviceProtocol.SPI),
+//    PinButton(text: "I2C.27", position: Position.left, deviceProtocol: DeviceProtocol.I2C),
+//    PinButton(text: "I2C.28", position: Position.right, deviceProtocol: DeviceProtocol.I2C),
+//    PinButton(text: "GPIO.05", position: Position.left, deviceProtocol: DeviceProtocol.GPIO),
+//    PinButton(text: "Ground.06", position: Position.right, deviceProtocol: DeviceProtocol.ground),
+//    PinButton(text: "GPIO.06", position: Position.left, deviceProtocol: DeviceProtocol.GPIO),
+//    PinButton(text: "GPIO.12", position: Position.right, deviceProtocol: DeviceProtocol.PWM),
+//    PinButton(text: "GPIO.13", position: Position.left, deviceProtocol: DeviceProtocol.PWM),
+//    PinButton(text: "Ground.07", position: Position.right, deviceProtocol: DeviceProtocol.ground),
+//    PinButton(text: "GPIO.19", position: Position.left, deviceProtocol: DeviceProtocol.PWM),
+//    PinButton(text: "GPIO.16", position: Position.right, deviceProtocol: DeviceProtocol.GPIO),
+//    PinButton(text: "GPIO.26", position: Position.left, deviceProtocol: DeviceProtocol.GPIO),
+//    PinButton(text: "GPIO.20", position: Position.right, deviceProtocol: DeviceProtocol.GPIO),
+//    PinButton(text: "Ground.08", position: Position.left, deviceProtocol: DeviceProtocol.ground),
+//    PinButton(text: "GPIO.21", position: Position.right, deviceProtocol: DeviceProtocol.GPIO),
+//]
 
 public var analogPins: [PinButton] = [
-    PinButton(text: "vDD", position: Position.top, type: DeviceProtocol.MC3008),
-    PinButton(text: "A0", position: Position.bottom, type: DeviceProtocol.MC3008),
-    PinButton(text: "vREF", position: Position.top, type: DeviceProtocol.MC3008),
-    PinButton(text: "A1", position: Position.bottom, type: DeviceProtocol.MC3008),
-    PinButton(text: "aGND", position: Position.top, type: DeviceProtocol.MC3008),
-    PinButton(text: "A2", position: Position.bottom, type: DeviceProtocol.MC3008),
-    PinButton(text: "SCLK", position: Position.top, type: DeviceProtocol.MC3008),
-    PinButton(text: "A3", position: Position.bottom, type: DeviceProtocol.MC3008),
-    PinButton(text: "MISO", position: Position.top, type: DeviceProtocol.MC3008),
-    PinButton(text: "A4", position: Position.bottom, type: DeviceProtocol.MC3008),
-    PinButton(text: "MOSI", position: Position.top, type: DeviceProtocol.MC3008),
-    PinButton(text: "A5", position: Position.bottom, type: DeviceProtocol.MC3008),
-    PinButton(text: "CE", position: Position.top, type: DeviceProtocol.MC3008),
-    PinButton(text: "A6", position: Position.bottom, type: DeviceProtocol.MC3008),
-    PinButton(text: "dGND", position: Position.top, type: DeviceProtocol.MC3008),
-    PinButton(text: "A7", position: Position.bottom, type: DeviceProtocol.MC3008),
+    PinButton(text: "vDD", position: Position.top, deviceProtocol: DeviceProtocol.MC3008),
+    PinButton(text: "A0", position: Position.bottom, deviceProtocol: DeviceProtocol.MC3008),
+    PinButton(text: "vREF", position: Position.top, deviceProtocol: DeviceProtocol.MC3008),
+    PinButton(text: "A1", position: Position.bottom, deviceProtocol: DeviceProtocol.MC3008),
+    PinButton(text: "aGND", position: Position.top, deviceProtocol: DeviceProtocol.MC3008),
+    PinButton(text: "A2", position: Position.bottom, deviceProtocol: DeviceProtocol.MC3008),
+    PinButton(text: "SCLK", position: Position.top, deviceProtocol: DeviceProtocol.MC3008),
+    PinButton(text: "A3", position: Position.bottom, deviceProtocol: DeviceProtocol.MC3008),
+    PinButton(text: "MISO", position: Position.top, deviceProtocol: DeviceProtocol.MC3008),
+    PinButton(text: "A4", position: Position.bottom, deviceProtocol: DeviceProtocol.MC3008),
+    PinButton(text: "MOSI", position: Position.top, deviceProtocol: DeviceProtocol.MC3008),
+    PinButton(text: "A5", position: Position.bottom, deviceProtocol: DeviceProtocol.MC3008),
+    PinButton(text: "CE", position: Position.top, deviceProtocol: DeviceProtocol.MC3008),
+    PinButton(text: "A6", position: Position.bottom, deviceProtocol: DeviceProtocol.MC3008),
+    PinButton(text: "dGND", position: Position.top, deviceProtocol: DeviceProtocol.MC3008),
+    PinButton(text: "A7", position: Position.bottom, deviceProtocol: DeviceProtocol.MC3008),
 ]
 
 public var pwmPins: [PinButton] = [
-    PinButton(text: "PWM.00", position: Position.right, type: DeviceProtocol.PCA9685),
-    PinButton(text: "PWM.01", position: Position.right, type: DeviceProtocol.PCA9685),
-    PinButton(text: "PWM.02", position: Position.right, type: DeviceProtocol.PCA9685),
-    PinButton(text: "PWM.03", position: Position.right, type: DeviceProtocol.PCA9685),
-    PinButton(text: "PWM.04", position: Position.right, type: DeviceProtocol.PCA9685),
-    PinButton(text: "PWM.05", position: Position.right, type: DeviceProtocol.PCA9685),
-    PinButton(text: "PWM.06", position: Position.right, type: DeviceProtocol.PCA9685),
-    PinButton(text: "PWM.07", position: Position.right, type: DeviceProtocol.PCA9685),
-    PinButton(text: "PWM.08", position: Position.right, type: DeviceProtocol.PCA9685),
-    PinButton(text: "PWM.09", position: Position.right, type: DeviceProtocol.PCA9685),
-    PinButton(text: "PWM.10", position: Position.right, type: DeviceProtocol.PCA9685),
-    PinButton(text: "PWM.11", position: Position.right, type: DeviceProtocol.PCA9685),
-    PinButton(text: "PWM.12", position: Position.right, type: DeviceProtocol.PCA9685),
-    PinButton(text: "PWM.13", position: Position.right, type: DeviceProtocol.PCA9685),
-    PinButton(text: "PWM.14", position: Position.right, type: DeviceProtocol.PCA9685),
-    PinButton(text: "PWM.15", position: Position.right, type: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.00", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.01", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.02", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.03", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.04", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.05", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.06", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.07", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.08", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.09", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.10", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.11", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.12", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.13", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.14", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
+    PinButton(text: "PWM.15", position: Position.right, deviceProtocol: DeviceProtocol.PCA9685),
 ]
 
 #endif

@@ -60,11 +60,11 @@ public struct PinView: View {
             
             switch self.state.type {
             case .GPIO:
-                internalPins = PinButton.setPinType(type: DeviceProtocol.GPIO, pins: rPi40Pins)
+                internalPins = PinButton.setPinProtocol(deviceProtocol: DeviceProtocol.GPIO, pins: rPi40Buttons)
             case .MC3008:
-                internalPins = PinButton.setPinType(type: DeviceProtocol.MC3008, pins: analogPins)
+                internalPins = PinButton.setPinProtocol(deviceProtocol: DeviceProtocol.MC3008, pins: analogPins)
             case .PCA9685:
-                internalPins = PinButton.setPinType(type: DeviceProtocol.PCA9685, pins: pwmPins)
+                internalPins = PinButton.setPinProtocol(deviceProtocol: DeviceProtocol.PCA9685, pins: pwmPins)
             default:
                 break
             }
