@@ -74,6 +74,7 @@ public struct PinView: View {
             break
         }
         for pin in internalPins {
+            if delegate == nil {continue}
             pin.delegate = delegate
         }
         return internalPins
