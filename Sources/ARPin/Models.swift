@@ -38,6 +38,13 @@ public class PinButton: Hashable, Codable {
         self.state.deviceProtocol = deviceProtocol
     }
     
+    public init(pin: Pin, position: Position) {
+        self.state.text = pin.state.name
+        self.state.color = pinColor(deviceProtocol: pin.state.deviceProtocol)
+        self.state.position = position
+        self.state.deviceProtocol = pin.state.deviceProtocol
+    }
+    
     public func isVertical() -> Bool {
         if (self.state.position == Position.top || self.state.position == Position.bottom){
             return true
@@ -114,10 +121,10 @@ public var rPi40Buttons:[PinButton] {
     get{
         var allButtons:[PinButton] = []
         
-        for (i,pin) in SwiftyPi.rPi40Pins.enumerated() {
+        for (i,pin) in pinsForProtocol(deviceProtocol: DeviceProtocol.GPIO).enumerated() {
             var position = Position.right
             if (i % 2 == 0) {position = .left}
-            allButtons.append(PinButton(text: pin.name, position: position, deviceProtocol: pin.deviceProtocol))
+            allButtons.append(PinButton(pin: pin, position: position))
         }
         return allButtons
     }
@@ -127,10 +134,10 @@ public var analogButtons:[PinButton] {
     get{
         var allButtons:[PinButton] = []
         
-        for (i,pin) in SwiftyPi.analogPins.enumerated() {
+        for (i,pin) in pinsForProtocol(deviceProtocol: DeviceProtocol.MCP3008).enumerated() {
             var position = Position.bottom
             if (i % 2 == 0) {position = .top}
-            allButtons.append(PinButton(text: pin.name, position: position, deviceProtocol: pin.deviceProtocol))
+            allButtons.append(PinButton(pin: pin, position: position))
         }
         return allButtons
     }
@@ -141,9 +148,9 @@ public var pca9685Buttons: [PinButton] {
     get{
         var allButtons:[PinButton] = []
         
-        for (_,pin) in SwiftyPi.pca9685pins.enumerated() {
-            print(pin.name)
-            allButtons.append(PinButton(text: pin.name, position: Position.right, deviceProtocol: DeviceProtocol.PCA9685))
+        for (_,pin) in pinsForProtocol(deviceProtocol: DeviceProtocol.PCA9685).enumerated() {
+//            (pin.name)print
+            allButtons.append(PinButton(pin: pin, position: Position.right))
         }
         return allButtons
         
