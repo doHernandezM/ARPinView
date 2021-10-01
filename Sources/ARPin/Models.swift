@@ -14,11 +14,11 @@ import SwiftyPi
 /// - Note: This is different from SwiftPi.Pin.
 public class PinButton: Hashable, Codable {
     public static func == (lhs: PinButton, rhs: PinButton) -> Bool {
-        return lhs.state.iconLabel == rhs.state.iconLabel
+        return lhs.state.label == rhs.state.label
     }
     
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(state.iconLabel)
+        hasher.combine(state.label)
     }
     public var delegate:PinButtonDelegate? = nil
     
@@ -126,7 +126,7 @@ public var rPi40Buttons:[PinButton] {
         let pinButtons:[SwiftyPi.Pin] = pinsForProtocol(deviceProtocol: DeviceProtocol.GPIO)
         
         for (i,pin) in pinButtons.enumerated() {
-            print(pin.state.label)
+//            print(pin.state.text())
             var position = Position.right
             if (i % 2 == 0) {position = .left}
             

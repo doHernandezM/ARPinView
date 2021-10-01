@@ -18,6 +18,10 @@ public struct PinButtonState: Codable {
     public var color: Color = Color.clear
     public var position: Position? = Position.left
     public var deviceProtocol: DeviceProtocol = DeviceProtocol.GPIO
+    
+    func text() -> String {
+        return label
+    }
 }
 
 func pinCircle(color:Color, pin:PinButton) -> some View {
