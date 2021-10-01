@@ -81,6 +81,7 @@ public struct PinView: View {
     
     public var body: some View {
         let isHorizontal = (self.state.type == DeviceProtocol.MCP3008)
+        
         ScrollView{
             ManualStack(isVertical: !isHorizontal) {
                 ForEach(pins, id:\.self){ pin in
@@ -99,6 +100,7 @@ public struct PinView: View {
                 }.padding(Edge.Set.all, 5.0)
             }.background(state.background)
         }
+        
     }
     
     public init() {

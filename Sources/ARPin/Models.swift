@@ -121,6 +121,7 @@ public var rPi40Buttons:[PinButton] {
         var allButtons:[PinButton] = []
         
         for (i,pin) in pinsForProtocol(deviceProtocol: DeviceProtocol.GPIO).enumerated() {
+            print(pin.state)
             var position = Position.right
             if (i % 2 == 0) {position = .left}
             allButtons.append(PinButton(pin: pin, position: position))
