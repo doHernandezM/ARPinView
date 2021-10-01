@@ -31,14 +31,14 @@ public class PinButton: Hashable, Codable {
     public init() {}
     
     public init(text: String, position: Position, deviceProtocol: DeviceProtocol) {
-        self.state.iconLabel = text
+        self.state.label = text
         self.state.color = pinColor(deviceProtocol: deviceProtocol)
         self.state.position = position
         self.state.deviceProtocol = deviceProtocol
     }
     
     public init(pin: Pin, position: Position) {
-        self.state.iconLabel = pin.state.name
+        self.state.label = pin.state.name
         self.state.color = pinColor(deviceProtocol: pin.state.deviceProtocol)
         self.state.position = position
         self.state.deviceProtocol = pin.state.deviceProtocol
@@ -55,9 +55,9 @@ public class PinButton: Hashable, Codable {
         var label = ""
         
         if isVertical() {
-            for (i,char) in self.state.iconLabel.enumerated() {
+            for (i,char) in self.state.label.enumerated() {
                 label = label + [char]
-                if i != (self.state.iconLabel.count - 1) {
+                if i != (self.state.label.count - 1) {
                     label = label + "\r"
                 }
             }
@@ -65,7 +65,7 @@ public class PinButton: Hashable, Codable {
             return label
         }
         
-        return self.state.iconLabel
+        return self.state.label
     }
     
     func frame() -> (width:Double,height:Double) {

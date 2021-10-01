@@ -53,57 +53,58 @@ public struct PinView: View {
         }
     }
     
-//    internal var internalPins: [PinButton]? = nil
+    //    internal var internalPins: [PinButton]? = nil
     ///
     public var delegate: PinButtonDelegate? = nil
     
     ///Makes the ``Pin`` consistent with the ``PinView``.
     public var pins: [PinButton] {
         get {
-        var internalPins: [PinButton] = []
-        
-        switch self.state.type {
-        case .GPIO:
-            internalPins = PinButton.setPinProtocol(deviceProtocol: DeviceProtocol.GPIO, pins: rPi40Buttons)
-        case .MCP3008:
-            internalPins = PinButton.setPinProtocol(deviceProtocol: DeviceProtocol.MCP3008, pins: analogButtons)
-        case .PCA9685:
-            internalPins = PinButton.setPinProtocol(deviceProtocol: DeviceProtocol.PCA9685, pins: pca9685Buttons)
-        default:
-            break
+            var internalPins: [PinButton] = []
+            
+            switch self.state.type {
+            case .GPIO:
+                internalPins = PinButton.setPinProtocol(deviceProtocol: DeviceProtocol.GPIO, pins: rPi40Buttons)
+            case .MCP3008:
+                internalPins = PinButton.setPinProtocol(deviceProtocol: DeviceProtocol.MCP3008, pins: analogButtons)
+            case .PCA9685:
+                internalPins = PinButton.setPinProtocol(deviceProtocol: DeviceProtocol.PCA9685, pins: pca9685Buttons)
+            default:
+                break
+            }
+            for pin in internalPins {
+                pin.delegate = self.delegate!
+            }
+            return internalPins
         }
-        for pin in internalPins {
-            pin.delegate = self.delegate!
-        }
-        return internalPins
     }
-    }
+    
     public var body: some View {
         let isHorizontal = (self.state.type == DeviceProtocol.MCP3008)
         ScrollView{
-        ManualStack(isVertical: !isHorizontal) {
-            ForEach(pins, id:\.self){ pin in
-                let pinLocation = pins.firstIndex(of: pin) ?? 0
-                
-                if (pinLocation % 2 == 0 && self.state.type != DeviceProtocol.PCA9685) {
-                    ManualStack(isVertical: isHorizontal) {PinButtonView(pin: pin)
-                        if let individualPin = PinButtonView(pin: pins[pinLocation + 1]){individualPin}
-                    }
-                } else if (self.state.type == DeviceProtocol.PCA9685) {
+            ManualStack(isVertical: !isHorizontal) {
+                ForEach(pins, id:\.self){ pin in
+                    let pinLocation = pins.firstIndex(of: pin) ?? 0
                     
-                    PinButtonView(pin: pin)
-                } else {
-                    EmptyView()
-                }
-            }.padding(Edge.Set.all, 5.0)
-        }.background(state.background)
+                    if (pinLocation % 2 == 0 && self.state.type != DeviceProtocol.PCA9685) {
+                        ManualStack(isVertical: isHorizontal) {PinButtonView(pin: pin)
+                            if let individualPin = PinButtonView(pin: pins[pinLocation + 1]){individualPin}
+                        }
+                    } else if (self.state.type == DeviceProtocol.PCA9685) {
+                        
+                        PinButtonView(pin: pin)
+                    } else {
+                        EmptyView()
+                    }
+                }.padding(Edge.Set.all, 5.0)
+            }.background(state.background)
         }
     }
     
     public init() {
         self.state = PinViewState(type: DeviceProtocol.GPIO, background: .clear, horizontal: false)
     }
-
+    
     public init(state: PinViewState, delegate:PinButtonDelegate?) {
         self.state = state
         self.delegate = delegate
@@ -122,7 +123,7 @@ struct PinView_Previews: PreviewProvider {
                 .preferredColorScheme(.light)
             PinView(state: PinViewState(type: DeviceProtocol.PCA9685, background: Color.gray.opacity(0.25), horizontal: false), delegate: nil)
                 .preferredColorScheme(.dark)
-            }
+        }
         .frame(width: 600.0, height:800.0)
         .previewDevice("Mac")
     }

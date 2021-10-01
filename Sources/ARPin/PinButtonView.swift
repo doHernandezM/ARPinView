@@ -47,7 +47,7 @@ struct PinIcon:View {
             } else {
                 pinCircle(color: .gray, pin: pin)
             }
-            Text(pin.state.label)
+            Text(pin.state.iconLabel)
                 .fontWeight(.medium)
                 .frame(width: pin.squareHeight(), height: pin.squareHeight())
                 .font(.system(.subheadline, design: .monospaced))
