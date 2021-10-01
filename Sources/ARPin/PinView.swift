@@ -73,7 +73,7 @@ public struct PinView: View {
                 break
             }
             for pin in internalPins {
-                pin.delegate = self.delegate!
+                pin.delegate = self.delegate
             }
             return internalPins
         }

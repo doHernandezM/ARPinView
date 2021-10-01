@@ -11,13 +11,14 @@ import SwiftyPi
 public struct PinButtonState: Codable {
     public var iconLabel = ""
     public var label = ""
+    
     public var enabled:Bool = true
     public var active:Bool = false
     
     public var color: Color = Color.clear
     public var position: Position? = Position.left
     public var deviceProtocol: DeviceProtocol = DeviceProtocol.GPIO
-    }
+}
 
 func pinCircle(color:Color, pin:PinButton) -> some View {
     ZStack{
@@ -30,7 +31,7 @@ func pinCircle(color:Color, pin:PinButton) -> some View {
             .frame(width:pin.squareHeight(), height: pin.squareHeight())
             .foregroundColor(Color.clear)
             .clipped()
-    
+        
     }
 }
 
@@ -53,7 +54,7 @@ struct PinIcon:View {
                 .font(.system(.subheadline, design: .monospaced))
                 .foregroundColor(Color.primary)
                 .shadow(color: Color.primary, radius: 1.0, x: 0.0, y: 0.0)
-                
+            
         }
     }
 }
@@ -75,7 +76,7 @@ struct PinLabel: View {
                     .clipped()
                     .frame(width: pin.frame().width, height: pin.frame().height)
                     .foregroundColor(Color.gray)
-
+                
                     .shadow(color: Color.black, radius: 1.0, x: 1.0, y: 1.0)
                     .saturation(0.75)
                 
@@ -94,7 +95,7 @@ struct PinLabel: View {
 
 public struct PinButtonView: View {
     public var pinButton: PinButton
-
+    
     public var body: some View {
         return Group{
             if pinButton.isVertical(){
@@ -124,13 +125,13 @@ public struct PinButtonView: View {
     public init() {
         self.pinButton = PinButton()
     }
-
+    
     
     public init(pin:PinButton) {
         self.pinButton = pin
     }
     
-
+    
     
     func pinButtonBlock() -> some View {
         Group{

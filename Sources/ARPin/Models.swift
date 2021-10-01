@@ -51,6 +51,10 @@ public class PinButton: Hashable, Codable {
         return false
     }
     
+    func text() -> String {
+        return self.state.label
+    }
+    
     public func label() -> String {
         var label = ""
         
@@ -119,11 +123,13 @@ public class PinButton: Hashable, Codable {
 public var rPi40Buttons:[PinButton] {
     get{
         var allButtons:[PinButton] = []
+        let pinButtons:[SwiftyPi.Pin] = pinsForProtocol(deviceProtocol: DeviceProtocol.GPIO)
         
-        for (i,pin) in pinsForProtocol(deviceProtocol: DeviceProtocol.GPIO).enumerated() {
-            print(pin.state)
+        for (i,pin) in pinButtons.enumerated() {
+            print(pin.state.label)
             var position = Position.right
             if (i % 2 == 0) {position = .left}
+            
             allButtons.append(PinButton(pin: pin, position: position))
         }
         return allButtons
