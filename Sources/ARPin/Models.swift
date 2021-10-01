@@ -107,7 +107,7 @@ public class PinButton: Hashable, Codable {
         case .SPI:
             return Color.blue
             
-        case .ground:
+        case .Ground:
             return Color.gray
         case .v5:
             return Color.pink
