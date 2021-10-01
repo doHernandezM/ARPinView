@@ -14,11 +14,11 @@ import SwiftyPi
 /// - Note: This is different from SwiftPi.Pin.
 public class PinButton: Hashable, Codable {
     public static func == (lhs: PinButton, rhs: PinButton) -> Bool {
-        return lhs.state.text == rhs.state.text
+        return lhs.state.iconLabel == rhs.state.iconLabel
     }
     
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(state.text)
+        hasher.combine(state.iconLabel)
     }
     public var delegate:PinButtonDelegate? = nil
     
@@ -26,20 +26,19 @@ public class PinButton: Hashable, Codable {
         case state
     }
     
-    
-    public var state: PinButtonState = PinButtonState(text: "8", enabled: true)
+    public var state: PinButtonState = PinButtonState(iconLabel: "8", enabled: true)
     
     public init() {}
     
     public init(text: String, position: Position, deviceProtocol: DeviceProtocol) {
-        self.state.text = text
+        self.state.iconLabel = text
         self.state.color = pinColor(deviceProtocol: deviceProtocol)
         self.state.position = position
         self.state.deviceProtocol = deviceProtocol
     }
     
     public init(pin: Pin, position: Position) {
-        self.state.text = pin.state.name
+        self.state.iconLabel = pin.state.name
         self.state.color = pinColor(deviceProtocol: pin.state.deviceProtocol)
         self.state.position = position
         self.state.deviceProtocol = pin.state.deviceProtocol
@@ -56,9 +55,9 @@ public class PinButton: Hashable, Codable {
         var label = ""
         
         if isVertical() {
-            for (i,char) in self.state.text.enumerated() {
+            for (i,char) in self.state.iconLabel.enumerated() {
                 label = label + [char]
-                if i != (self.state.text.count - 1) {
+                if i != (self.state.iconLabel.count - 1) {
                     label = label + "\r"
                 }
             }
@@ -66,7 +65,7 @@ public class PinButton: Hashable, Codable {
             return label
         }
         
-        return self.state.text
+        return self.state.iconLabel
     }
     
     func frame() -> (width:Double,height:Double) {

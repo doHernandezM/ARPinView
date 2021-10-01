@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftyPi
 
 public struct PinButtonState: Codable {
-    public var text = "8"
+    public var iconLabel = "8"
     public var label = ""
     public var enabled:Bool = true
     public var active:Bool = false
