@@ -124,6 +124,13 @@ public struct PinButtonView: View {
         }.onTapGesture {
             self.pinButton.delegate?.pinAction(pin: self.pinButton)
         }
+        //        .onDrag {
+        //            self.pinButton.delegate?.pinAction(pin: self.pinButton)
+        //            NSItemProvider(object: self.pinButton.state.label)
+        //        }
+        .onMoveCommand { moveCommandDirection in
+            self.pinButton.delegate?.pinAction(pin: self.pinButton)
+        }
     }
     
     public init() {
