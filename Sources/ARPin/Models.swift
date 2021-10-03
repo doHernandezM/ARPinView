@@ -12,7 +12,7 @@ import SwiftyPi
 ///Pin model for the Pin view
 ///
 /// - Note: This is different from SwiftPi.Pin.
-public class PinButton: Hashable, Codable {
+public class PinButton: Hashable {
     public static func == (lhs: PinButton, rhs: PinButton) -> Bool {
         return lhs.state.label == rhs.state.label
     }
@@ -21,10 +21,6 @@ public class PinButton: Hashable, Codable {
         hasher.combine(state.label)
     }
     public var delegate:PinButtonDelegate? = nil
-    
-    enum CodingKeys: String, CodingKey {
-        case state
-    }
     
     public var state: PinButtonState = PinButtonState(iconLabel: "8", enabled: true)
     

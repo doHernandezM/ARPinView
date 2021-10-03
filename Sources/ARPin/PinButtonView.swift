@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftyPi
 
-public struct PinButtonState: Codable {
+public struct PinButtonState: Codable{
     public var iconLabel = ""
     public var label = ""
     
@@ -98,6 +98,7 @@ struct PinLabel: View {
 }
 
 public struct PinButtonView: View {
+    
     public var pinButton: PinButton
     
     public var body: some View {
@@ -124,13 +125,13 @@ public struct PinButtonView: View {
         }.onTapGesture {
             self.pinButton.delegate?.pinAction(pin: self.pinButton)
         }
-        //        .onDrag {
+//        .onDrag {
+//            //                    self.pinButton.delegate?.pinAction(pin: self.pinButton)
+//            NSItemProvider(object: self.pinButton)
+//        }
+        //        .onMoveCommand { moveCommandDirection in
         //            self.pinButton.delegate?.pinAction(pin: self.pinButton)
-        //            NSItemProvider(object: self.pinButton.state.label)
         //        }
-        .onMoveCommand { moveCommandDirection in
-            self.pinButton.delegate?.pinAction(pin: self.pinButton)
-        }
     }
     
     public init() {
