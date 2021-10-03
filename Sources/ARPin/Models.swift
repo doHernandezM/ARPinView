@@ -123,7 +123,7 @@ public class PinButton: Hashable, Codable {
 public var rPi40Buttons:[PinButton] {
     get{
         var allButtons:[PinButton] = []
-        let pinButtons:[SwiftyPi.Pin] = pinsForProtocol(deviceProtocol: DeviceProtocol.GPIO)
+        let pinButtons:[SwiftyPi.Pin] = PinController.pinsForProtocol(deviceProtocol: DeviceProtocol.GPIO)
         
         for (i,pin) in pinButtons.enumerated() {
 //            print(pin.state.text())
@@ -140,7 +140,7 @@ public var analogButtons:[PinButton] {
     get{
         var allButtons:[PinButton] = []
         
-        for (i,pin) in pinsForProtocol(deviceProtocol: DeviceProtocol.MCP3008).enumerated() {
+        for (i,pin) in PinController.pinsForProtocol(deviceProtocol: DeviceProtocol.MCP3008).enumerated() {
             var position = Position.bottom
             if (i % 2 == 0) {position = .top}
             allButtons.append(PinButton(pin: pin, position: position))
@@ -154,7 +154,7 @@ public var pca9685Buttons: [PinButton] {
     get{
         var allButtons:[PinButton] = []
         
-        for (_,pin) in pinsForProtocol(deviceProtocol: DeviceProtocol.PCA9685).enumerated() {
+        for (_,pin) in PinController.pinsForProtocol(deviceProtocol: DeviceProtocol.PCA9685).enumerated() {
 //            (pin.name)print
             allButtons.append(PinButton(pin: pin, position: Position.right))
         }
