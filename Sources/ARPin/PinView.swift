@@ -104,15 +104,21 @@ public struct PinView: View {
     }
     
     public init() {
+        PinController.loadPins()
+        
         self.state = PinViewState(type: DeviceProtocol.GPIO, background: .clear, horizontal: false)
     }
     
     public init(state: PinViewState, delegate:PinButtonDelegate?) {
+        PinController.loadPins()
+        
         self.state = state
         self.delegate = delegate
     }
     
     public init(state: PinViewState) {
+        PinController.loadPins()
+        
         self.state = state
     }
     
