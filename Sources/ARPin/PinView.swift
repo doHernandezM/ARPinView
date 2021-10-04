@@ -103,7 +103,8 @@ public struct PinView: View {
                     }.padding(Edge.Set.all, 5.0)
                 }.background(state.background)
             }
-        }
+        }.padding(5.0)
+            .background(Color.black)
     }
     
     public init() {
