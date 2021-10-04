@@ -91,9 +91,11 @@ public struct PinView: View {
                         let pinLocation = pins.firstIndex(of: pin) ?? 0
                         
                         if (pinLocation % 2 == 0 && self.state.type != DeviceProtocol.PCA9685) {
+                            Spacer()
                             ManualStack(isVertical: isHorizontal) {PinButtonView(pin: pin)
                                 if let individualPin = PinButtonView(pin: pins[pinLocation + 1]){individualPin}
-                            }
+                                Spacer()
+                                }
                         } else if (self.state.type == DeviceProtocol.PCA9685) {
                             
                             PinButtonView(pin: pin)
