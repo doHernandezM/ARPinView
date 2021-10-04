@@ -42,11 +42,11 @@ public struct PinView: View {
         get {
             switch self.state.type {
             case .GPIO:
-                return .clear
+                return .black.opacity(0.5)
             case .MCP3008:
                 return .black.opacity(0.75)
             case .PWM:
-                return .clear
+                return .black.opacity(0.5)
             default:
                 return .clear
             }
