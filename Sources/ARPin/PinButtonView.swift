@@ -31,7 +31,7 @@ func pinCircle(color:Color, pin:PinButton) -> some View {
             .frame(width:pin.squareHeight() - 1, height: pin.squareHeight() - 1)
 //            .shadow(color: Color.black, radius: 1.0, x: 1.0, y: 1.0)
         Circle()
-            .strokeBorder((Color.primary.opacity(0.75)), lineWidth: 1.0)
+            .strokeBorder((Color.primary), lineWidth: 1.0)
             .frame(width:pin.squareHeight(), height: pin.squareHeight())
             .foregroundColor(Color.clear)
             .clipped()
@@ -70,22 +70,19 @@ struct PinLabel: View {
         ZStack {
             if pin.state.deviceProtocol != DeviceProtocol.PCA9685 {
                 RoundedRectangle(cornerRadius: 18.0)
-                    .clipped()
+                    .addBorder(Color.primary, width: 1.0, cornerRadius: 18.0)
                     .frame(width: pin.frame().width, height: pin.frame().height)
                     .foregroundColor(pin.state.color)
 //                    .shadow(color: Color.black, radius: 1.0, x: 1.0, y: 1.0)
                     .saturation(0.75)
             } else {
                 RoundedRectangle(cornerRadius: 18.0)
-                    .clipped()
-                    .frame(width: pin.frame().width, height: pin.frame().height)
                     .foregroundColor(Color.gray)
+                    .addBorder(Color.primary, width: 1.0, cornerRadius: 18.0)
+                    .frame(width: pin.frame().width, height: pin.frame().height)
 //                    .shadow(color: Color.black, radius: 1.0, x: 1.0, y: 1.0)
                     .saturation(0.75)
-                    .border(Color.primary, width: 1.0)
-//                    .cornerRadius(18.0)
-                
-                
+
             }
             Text(pin.label())
                 .frame(width: pin.frame().width, height: pin.frame().height)
@@ -124,7 +121,8 @@ public struct PinButtonView: View {
                     pinButtonBlock()
                 }
             }
-        }.onTapGesture {
+        }
+        .onTapGesture {
             self.pinButton.delegate?.pinAction(pin: self.pinButton)
         }
 //        .onDrag {
