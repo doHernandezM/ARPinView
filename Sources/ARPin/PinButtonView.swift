@@ -57,7 +57,7 @@ struct PinIcon:View {
                 .frame(width: pin.squareHeight(), height: pin.squareHeight())
                 .font(.system(.subheadline, design: .monospaced))
                 .foregroundColor(Color.primary)
-                .shadow(color: Color.primary, radius: 1.0, x: 0.0, y: 0.0)
+                .shadow(color: Color.primary, radius: 0.5, x: 0.0, y: 0.0)
             
         }
     }
@@ -91,7 +91,7 @@ struct PinLabel: View {
                 .clipped()
                 .font(.system(.subheadline, design: .monospaced))
                 .foregroundColor(Color.primary)
-                .shadow(color: Color.primary, radius: 1.0, x: 0.0, y: 0.0)
+                .shadow(color: Color.primary, radius: 0.5, x: 0.0, y: 0.0)
         }
     }
 }
