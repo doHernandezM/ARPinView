@@ -45,7 +45,7 @@ struct PinIcon:View {
     var body: some View {
         ZStack {
             if pin.state.deviceProtocol == DeviceProtocol.PCA9685 {
-                RoundedRectangle(cornerRadius: 18.0)
+                RoundedRectangle(cornerRadius: 18.0, style:.continuous)
                     .frame(width:pin.squareHeight(), height: pin.squareHeight())
                     .foregroundColor(pin.state.color)
                     .clipped()
@@ -69,14 +69,14 @@ struct PinLabel: View {
     var body: some View {
         ZStack {
             if pin.state.deviceProtocol != DeviceProtocol.PCA9685 {
-                RoundedRectangle(cornerRadius: 18.0)
+                RoundedRectangle(cornerRadius: 18.0, style:.continuous)
                     .addBorder(Color.primary, width: 1.0, cornerRadius: 18.0)
                     .frame(width: pin.frame().width, height: pin.frame().height)
                     .foregroundColor(pin.state.color)
 //                    .shadow(color: Color.black, radius: 1.0, x: 1.0, y: 1.0)
                     .saturation(0.75)
             } else {
-                RoundedRectangle(cornerRadius: 18.0)
+                RoundedRectangle(cornerRadius: 18.0, style:.continuous)
                     .foregroundColor(Color.gray)
                     .addBorder(Color.primary, width: 1.0, cornerRadius: 18.0)
                     .frame(width: pin.frame().width, height: pin.frame().height)
