@@ -83,7 +83,7 @@ public struct PinView: View {
     public var body: some View {
         let isHorizontal = (self.state.type == DeviceProtocol.MCP3008)
         ZStack{
-            RoundedRectangle(cornerRadius: 9.0, style: .circular)
+            RoundedRectangle(cornerRadius: 18.0, style: .circular)
                 .foregroundColor(Color.gray)
             
             ScrollView{

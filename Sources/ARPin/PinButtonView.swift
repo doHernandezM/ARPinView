@@ -29,7 +29,7 @@ func pinCircle(color:Color, pin:PinButton) -> some View {
         Circle()
             .foregroundColor(color)
             .frame(width:pin.squareHeight() - 1, height: pin.squareHeight() - 1)
-            .shadow(color: Color.black, radius: 1.0, x: 1.0, y: 1.0)
+//            .shadow(color: Color.black, radius: 1.0, x: 1.0, y: 1.0)
         Circle()
             .strokeBorder((Color.primary.opacity(0.75)), lineWidth: 1.0)
             .frame(width:pin.squareHeight(), height: pin.squareHeight())
@@ -45,7 +45,7 @@ struct PinIcon:View {
     var body: some View {
         ZStack {
             if pin.state.deviceProtocol == DeviceProtocol.PCA9685 {
-                RoundedRectangle(cornerRadius: 9.0)
+                RoundedRectangle(cornerRadius: 18.0)
                     .frame(width:pin.squareHeight(), height: pin.squareHeight())
                     .foregroundColor(pin.state.color)
                     .clipped()
@@ -69,19 +69,18 @@ struct PinLabel: View {
     var body: some View {
         ZStack {
             if pin.state.deviceProtocol != DeviceProtocol.PCA9685 {
-                RoundedRectangle(cornerRadius: 9.0)
+                RoundedRectangle(cornerRadius: 18.0)
                     .clipped()
                     .frame(width: pin.frame().width, height: pin.frame().height)
                     .foregroundColor(pin.state.color)
-                    .shadow(color: Color.black, radius: 1.0, x: 1.0, y: 1.0)
+//                    .shadow(color: Color.black, radius: 1.0, x: 1.0, y: 1.0)
                     .saturation(0.75)
             } else {
-                RoundedRectangle(cornerRadius: 9.0)
+                RoundedRectangle(cornerRadius: 18.0)
                     .clipped()
                     .frame(width: pin.frame().width, height: pin.frame().height)
                     .foregroundColor(Color.gray)
-                
-                    .shadow(color: Color.black, radius: 1.0, x: 1.0, y: 1.0)
+//                    .shadow(color: Color.black, radius: 1.0, x: 1.0, y: 1.0)
                     .saturation(0.75)
                 
             }
