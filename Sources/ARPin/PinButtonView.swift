@@ -126,10 +126,10 @@ public struct PinButtonView: View {
             self.pinButton.delegate?.pinAction(pin: self.pinButton)
         }
         .onDrag{
-            if let data = self.pinButton.text().data(using: .utf8){
-                return NSItemProvider(object: data as NSData as! NSItemProviderWriting)
-            }
-            return NSItemProvider()
+//            if let data = self.pinButton.text().data(using: .utf8){
+            return NSItemProvider(object: self.pinButton.text() as NSString)
+//            }
+//            return NSItemProvider()
         }
 //        .gesture(
 //            DragGesture()
