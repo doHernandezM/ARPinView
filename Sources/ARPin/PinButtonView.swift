@@ -125,6 +125,7 @@ public struct PinButtonView: View {
         .onTapGesture {
             self.pinButton.delegate?.pinAction(pin: self.pinButton)
         }
+        .onDrag{return NSItemProvider(object: self.pinButton.text().data(using: .utf8) as! NSItemProviderWriting)}
         .gesture(
             DragGesture()
                 .onChanged{ poop in
