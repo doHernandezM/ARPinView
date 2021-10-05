@@ -89,26 +89,26 @@ public class PinButton: Hashable {
     public func pinColor(deviceProtocol:DeviceProtocol) -> Color {
         switch deviceProtocol {
         case .GPIO:
-            return Color.green
+            return Color.green.opacity(0.8)
         case .PWM:
-            return Color.yellow
+            return Color.yellow.opacity(0.8)
         case .MCP3008:
-            return Color.gray
+            return Color.gray.opacity(0.8)
         case .PCA9685:
-            return Color.yellow
+            return Color.yellow.opacity(0.8)
         case .UART:
-            return Color.purple
+            return Color.purple.opacity(0.8)
         case .I2C:
-            return Color.red
+            return Color.red.opacity(0.8)
         case .SPI:
-            return Color.blue
+            return Color.blue.opacity(0.8)
             
         case .Ground:
-            return Color.gray
+            return Color.gray.opacity(0.8)
         case .v5:
-            return Color.pink
+            return Color.pink.opacity(0.8)
         case .v3:
-            return Color.orange
+            return Color.orange.opacity(0.8)
         }
         
         //    return .accentColor
