@@ -82,6 +82,9 @@ struct PinLabel: View {
                     .foregroundColor(Color.gray)
 //                    .shadow(color: Color.black, radius: 1.0, x: 1.0, y: 1.0)
                     .saturation(0.75)
+                    .border(Color.primary, width: 1.0)
+//                    .cornerRadius(18.0)
+                
                 
             }
             Text(pin.label())
