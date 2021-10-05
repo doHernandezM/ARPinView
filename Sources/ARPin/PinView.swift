@@ -14,10 +14,10 @@ import SwiftyPi
 //extension Pins {
 
 ///Use this to tell the ``PinView`` how to behave.
-public struct PinViewState: Codable {
-    public var type: DeviceProtocol = DeviceProtocol.PWM
-    public var background:Color?
-    public var horizontal:Bool = true
+public class PinViewState: ObservableObject {
+    @Published public var type: DeviceProtocol = DeviceProtocol.PWM
+    @Published public var background:Color?
+    @Published public var horizontal:Bool = true
     
     public init(type: DeviceProtocol, background: Color, horizontal: Bool){
         self.type = type
@@ -37,7 +37,8 @@ public enum Position: Int, Codable {
 ///Provide the ``PinView``  with a ``PinViewState`` to get stated
 public struct PinView: View {
     
-    public var state: PinViewState
+    @EnvironmentObject public var state: PinViewState
+    
     public var backgroundColor: Color  {
         get {
             switch self.state.type {
@@ -109,31 +110,27 @@ public struct PinView: View {
     
     public init() {
         PinController.loadPins()
-        
-        self.state = PinViewState(type: DeviceProtocol.GPIO, background: .clear, horizontal: false)
     }
     
-    public init(state: PinViewState, delegate:PinButtonDelegate?) {
-        PinController.loadPins()
-        
-        self.state = state
+    public init(delegate:PinButtonDelegate?) {
         self.delegate = delegate
+        PinController.loadPins()
     }
     
-    public init(state: PinViewState) {
-        PinController.loadPins()
-        
-        self.state = state
-    }
+    //    public init(state: PinViewState) {
+    //        PinController.loadPins()
+    //
+    ////        self.state = state
+    //    }
     
 }
 
 struct PinView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            PinView(state: PinViewState(type: DeviceProtocol.GPIO, background: Color.gray.opacity(0.25), horizontal: false), delegate: nil)
+            PinView(delegate: nil)
                 .preferredColorScheme(.light)
-            PinView(state: PinViewState(type: DeviceProtocol.PCA9685, background: Color.gray.opacity(0.25), horizontal: false), delegate: nil)
+            PinView(delegate: nil)
                 .preferredColorScheme(.dark)
         }
         .frame(width: 600.0, height:800.0)

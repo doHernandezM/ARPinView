@@ -8,16 +8,16 @@
 import SwiftUI
 import SwiftyPi
 
-public struct PinButtonState: Codable{
+public class PinButtonState: ObservableObject{
     public var iconLabel = ""
     public var label = ""
     
-    public var enabled:Bool = true
-    public var active:Bool = false
+    @Published public var enabled:Bool = true
+    @Published public var active:Bool = false
     
-    public var color: Color = Color.clear
+    @Published public var color: Color = Color.clear
     public var position: Position? = Position.left
-    public var deviceProtocol: DeviceProtocol = DeviceProtocol.GPIO
+    @Published public var deviceProtocol: DeviceProtocol = DeviceProtocol.GPIO
     
     func text() -> String {
         return label

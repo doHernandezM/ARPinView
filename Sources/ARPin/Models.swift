@@ -22,7 +22,7 @@ public class PinButton: Hashable {
     }
     public var delegate:PinButtonDelegate? = nil
     
-    public var state: PinButtonState = PinButtonState(iconLabel: "8", enabled: true)
+    public var state: PinButtonState = PinButtonState()
     
     public init() {}
     
