@@ -125,6 +125,17 @@ public struct PinButtonView: View {
         .onTapGesture {
             self.pinButton.delegate?.pinAction(pin: self.pinButton)
         }
+        .gesture(
+            DragGesture()
+                .onChanged{ poop in
+                    print(poop.translation)
+                    self.pinButton.delegate?.pinAction(pin: self.pinButton)
+                }
+                .onEnded{ poop in
+                    print(poop.translation)
+                    self.pinButton.delegate?.pinAction(pin: self.pinButton)
+                }
+        )
 //        .onDrag {
 //            //                    self.pinButton.delegate?.pinAction(pin: self.pinButton)
 //            NSItemProvider(object: self.pinButton)
